@@ -10,7 +10,6 @@
             --secondary: #25d366;
             --accent-red: #dc2626;
             --accent-blue: #2563eb;
-            --accent-purple: #7c3aed;
             --text: #1f2937;
             --bg-gradient: linear-gradient(135deg, #e0e7ff, #f3f4f6);
             --card-bg: #ffffff;
@@ -117,7 +116,7 @@
             transform: scale(1.02);
         }
 
-        #shareBtn, #reportBtn, #backBtn, #popupShareBtn, #printBtn, #copyBtn, #popupPrintBtn, #popupCopyBtn, .history-share-btn, .history-print-btn, .history-copy-btn {
+        #shareBtn, #reportBtn, #backBtn, #popupShareBtn {
             background: linear-gradient(to right, var(--secondary), #2ecc71);
             display: flex;
             align-items: center;
@@ -125,28 +124,15 @@
             gap: 0.5rem;
         }
 
-        #printBtn, #copyBtn, #popupPrintBtn, #popupCopyBtn, .history-print-btn, .history-copy-btn {
-            background: linear-gradient(to right, var(--accent-purple), #9f7aea);
-        }
-
-        #resultButtons {
+        #shareBtn, #reportBtn {
             display: none;
-            flex-wrap: wrap;
         }
 
-        #resultButtons.active {
-            display: flex;
-        }
-
-        #shareBtn:hover, #reportBtn:hover, #backBtn:hover, #popupShareBtn:hover, .history-share-btn:hover {
+        #shareBtn:hover, #reportBtn:hover, #backBtn:hover, #popupShareBtn:hover {
             background: linear-gradient(to right, #128c7e, var(--secondary));
         }
 
-        #printBtn:hover, #copyBtn:hover, #popupPrintBtn:hover, #popupCopyBtn:hover, .history-print-btn:hover, .history-copy-btn:hover {
-            background: linear-gradient(to right, #6b21a8, #7c3aed);
-        }
-
-        .whatsapp-icon, .report-icon, .back-icon, .print-icon, .copy-icon {
+        .whatsapp-icon, .report-icon, .back-icon {
             width: 1.2rem;
             height: 1.2rem;
             fill: white;
@@ -155,10 +141,9 @@
         .button-group {
             display: flex;
             gap: 1rem;
-            flex-wrap: wrap;
         }
 
-        #resultMain, #result, .history-result {
+        #resultMain, #result {
             font-size: 0.9rem;
             color: var(--text);
             white-space: pre-wrap;
@@ -175,6 +160,7 @@
             border: 1px solid var(--border);
             border-radius: 0.5rem;
             background: #f9fafb;
+            transition: max-height 0.3s ease-out;
         }
 
         summary {
@@ -192,7 +178,7 @@
             display: inline-block;
             width: 0.8rem;
             height: 0.8rem;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231e3a8a"><path d="M6.59 8.59L12 12l5.59-5.59L18 6l-6 6-6-6z"/></svg>') no-repeat center;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231e3a8a"><path d="M6 9l6 6 6-6"/></svg>') no-repeat center;
             background-size: contain;
             transition: transform 0.3s;
         }
@@ -239,6 +225,7 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
+        /* Estilos dos Popups */
         #welcomePopup, #resultPopup {
             display: none;
             position: fixed;
@@ -295,24 +282,6 @@
             font-size: 0.95rem;
         }
 
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            .print-content, .print-content * {
-                visibility: visible;
-            }
-            .print-content {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                padding: 20px;
-                font-size: 12pt;
-                color: #000;
-            }
-        }
-
         @media (max-width: 600px) {
             .calculator, .report-container {
                 padding: 1.5rem;
@@ -361,18 +330,6 @@
                         <path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.17.71 4.18 1.91 5.82L2 22l4.36-1.91c1.54.94 3.27 1.44 5.08 1.44 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.18c-1.54 0-3.03-.45-4.31-1.29l-.31-.18-2.58 1.13 1.13-2.58-.18-.31c-.84-1.28-1.29-2.77-1.29-4.31 0-4.55 3.71-8.26 8.26-8.26s8.26 3.71 8.26 8.26-3.71 8.26-8.26 8.26zm4.66-5.79c-.25-.13-1.47-.73-1.7-.82-.22-.09-.38-.13-.54.13-.16.25-.62.82-.76.98-.13.16-.27.18-.51.06-.25-.13-1.05-.48-2-1.47-.74-.76-1.24-1.71-1.38-1.96-.13-.25-.01-.38.11-.51.11-.11.25-.29.38-.44.13-.16.18-.29.25-.44.07-.16.04-.31-.09-.44-.13-.13-.54-1.29-.73-1.78-.18-.47-.36-.4-.51-.4-.16 0-.31 0-.47 0-.16 0-.29.07-.42.31-.13.25-.51.98-.51 2.38 0 1.4.53 2.76 1.47 3.78.94 1.02 2.76 2.15 4.66 2.38.44.05.76-.02.98-.18.25-.18.36-.44.42-.71.07-.27.04-.51-.09-.64z"/>
                     </svg>
                     Compartilhar no WhatsApp
-                </button>
-                <button id="popupPrintBtn" onclick="printResult(document.getElementById('popupResult').textContent)">
-                    <svg class="print-icon" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
-                    </svg>
-                    Imprimir
-                </button>
-                <button id="popupCopyBtn" onclick="copyResult(document.getElementById('popupResult').textContent)">
-                    <svg class="copy-icon" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                    Copiar
                 </button>
                 <button onclick="closeResultPopup()">Fechar</button>
             </div>
@@ -432,36 +389,6 @@
         </div>
         <button onclick="calcularTransformador()">Calcular</button>
         <div id="resultMain"></div>
-        <div class="button-group" id="resultButtons">
-            <button id="shareBtn" onclick="shareToWhatsApp()">
-                <svg class="whatsapp-icon" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.17.71 4.18 1.91 5.82L2 22l4.36-1.91c1.54.94 3.27 1.44 5.08 1.44 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.18c-1.54 0-3.03-.45-4.31-1.29l-.31-.18-2.58 1.13 1.13-2.58-.18-.31c-.84-1.28-1.29-2.77-1.29-4.31 0-4.55 3.71-8.26 8.26-8.26s8.26 3.71 8.26 8.26-3.71 8.26-8.26 8.26zm4.66-5.79c-.25-.13-1.47-.73-1.7-.82-.22-.09-.38-.13-.54.13-.16.25-.62.82-.76.98-.13.16-.27.18-.51.06-.25-.13-1.05-.48-2-1.47-.74-.76-1.24-1.71-1.38-1.96-.13-.25-.01-.38.11-.51.11-.11.25-.29.38-.44.13-.16.18-.29.25-.44.07-.16.04-.31-.09-.44-.13-.13-.54-1.29-.73-1.78-.18-.47-.36-.4-.51-.4-.16 0-.31 0-.47 0-.16 0-.29.07-.42.31-.13.25-.51.98-.51 2.38 0 1.4.53 2.76 1.47 3.78.94 1.02 2.76 2.15 4.66 2.38.44.05.76-.02.98-.18.25-.18.36-.44.42-.71.07-.27.04-.51-.09-.64z"/>
-                </svg>
-                Compartilhar no WhatsApp
-            </button>
-            <button id="printBtn" onclick="printResult(document.getElementById('resultMain').textContent)">
-                <svg class="print-icon" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
-                </svg>
-                Imprimir
-            </button>
-            <button id="copyBtn" onclick="copyResult(document.getElementById('resultMain').textContent)">
-                <svg class="copy-icon" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                </svg>
-                Copiar
-            </button>
-            <button id="reportBtn" onclick="showReports()">
-                <svg class="report-icon" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l6 6v10c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h7v1zm-2 12H8v-2h3v2zm0-4H8V8h3v2z"/>
-                </svg>
-                Ver Relatórios
-            </button>
-        </div>
-        <details id="historySection">
-            <summary>Histórico de Cálculos</summary>
-            <div id="historyContent"></div>
-        </details>
         <details>
             <summary>Explicações: Fórmulas e Ligações</summary>
             <div class="explanation">
@@ -497,6 +424,20 @@
                    A defasagem indica o deslocamento angular do secundário em relação ao primário (1h = 30°).</p>
             </div>
         </details>
+        <div class="button-group">
+            <button id="shareBtn" onclick="shareToWhatsApp()">
+                <svg class="whatsapp-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.17.71 4.18 1.91 5.82L2 22l4.36-1.91c1.54.94 3.27 1.44 5.08 1.44 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.18c-1.54 0-3.03-.45-4.31-1.29l-.31-.18-2.58 1.13 1.13-2.58-.18-.31c-.84-1.28-1.29-2.77-1.29-4.31 0-4.55 3.71-8.26 8.26-8.26s8.26 3.71 8.26 8.26-3.71 8.26-8.26 8.26zm4.66-5.79c-.25-.13-1.47-.73-1.7-.82-.22-.09-.38-.13-.54.13-.16.25-.62.82-.76.98-.13.16-.27.18-.51.06-.25-.13-1.05-.48-2-1.47-.74-.76-1.24-1.71-1.38-1.96-.13-.25-.01-.38.11-.51.11-.11.25-.29.38-.44.13-.16.18-.29.25-.44.07-.16.04-.31-.09-.44-.13-.13-.54-1.29-.73-1.78-.18-.47-.36-.4-.51-.4-.16 0-.31 0-.47 0-.16 0-.29.07-.42.31-.13.25-.51.98-.51 2.38 0 1.4.53 2.76 1.47 3.78.94 1.02 2.76 2.15 4.66 2.38.44.05.76-.02.98-.18.25-.18.36-.44.42-.71.07-.27.04-.51-.09-.64z"/>
+                </svg>
+                Compartilhar no WhatsApp
+            </button>
+            <button id="reportBtn" onclick="showReports()">
+                <svg class="report-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l6 6v10c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h7v1zm-2 12H8v-2h3v2zm0-4H8V8h3v2z"/>
+                </svg>
+                Ver Relatórios
+            </button>
+        </div>
     </div>
     <div id="reportPage" class="report-container">
         <h2>Relatórios do Transformador</h2>
@@ -528,572 +469,337 @@
     </div>
 
     <script>
-        // Variáveis globais
+        // Variáveis globais para armazenar resultados
         let transformerResult = '';
         let transformerData = {};
 
-        // Escapamento seguro para texto em eventos inline
-        function escapeForInlineJS(text) {
-            return text
-                .replace(/'/g, "\\'")
-                .replace(/"/g, '\\"')
-                .replace(/\n/g, '\\n')
-                .replace(/\r/g, '\\r')
-                .replace(/</g, '<')
-                .replace(/>/g, '>');
-        }
-
-        // Exibir popup de boas-vindas e carregar histórico
+        // Exibir popup de boas-vindas ao carregar
         window.onload = function() {
-            try {
-                document.getElementById('welcomePopup').style.display = 'flex';
-                loadHistory();
-            } catch (e) {
-                console.error('Erro ao carregar página:', e);
-                alert('Erro ao iniciar a aplicação. Verifique o console para detalhes.');
-            }
+            document.getElementById('welcomePopup').style.display = 'flex';
         };
 
         // Fechar popup de boas-vindas
         function closePopup() {
-            try {
-                document.getElementById('welcomePopup').style.display = 'none';
-            } catch (e) {
-                console.error('Erro ao fechar popup de boas-vindas:', e);
-            }
+            document.getElementById('welcomePopup').style.display = 'none';
         }
 
         // Fechar popup de resultados
         function closeResultPopup() {
-            try {
-                document.getElementById('resultPopup').style.display = 'none';
-            } catch (e) {
-                console.error('Erro ao fechar popup de resultados:', e);
-            }
+            document.getElementById('resultPopup').style.display = 'none';
         }
 
         // Mostrar página principal
         function showMainPage() {
-            try {
-                document.getElementById('mainPage').style.display = 'block';
-                document.getElementById('reportPage').style.display = 'none';
-            } catch (e) {
-                console.error('Erro ao mostrar página principal:', e);
-            }
+            document.getElementById('mainPage').style.display = 'block';
+            document.getElementById('reportPage').style.display = 'none';
         }
 
         // Mostrar página de relatórios
         function showReports() {
-            try {
-                document.getElementById('mainPage').style.display = 'none';
-                document.getElementById('reportPage').style.display = 'block';
-                const resultDiv = document.getElementById('result');
-                resultDiv.textContent = transformerResult || 'Nenhum resultado disponível.';
-                resultDiv.style.opacity = '0';
-                setTimeout(() => { resultDiv.style.opacity = '1'; }, 50);
-                if (transformerData.grupoVetorial) {
-                    desenharDiagramas(transformerData.grupoVetorial, transformerData.defasagem, transformerData.fatorPotencia);
-                }
-            } catch (e) {
-                console.error('Erro ao mostrar relatórios:', e);
-                alert('Erro ao exibir relatórios. Verifique o console.');
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById('reportPage').style.display = 'block';
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = transformerResult || 'Nenhum resultado disponível.';
+            resultDiv.style.opacity = '0';
+            setTimeout(() => { resultDiv.style.opacity = '1'; }, 50);
+            if (transformerData.grupoVetorial) {
+                desenharDiagramas(transformerData.grupoVetorial, transformerData.defasagem, transformerData.fatorPotencia);
             }
         }
 
-        // Imprimir resultados
-        function printResult(text) {
-            try {
-                if (!text) throw new Error('Nenhum texto para imprimir.');
-                const printWindow = window.open('', '', 'width=800,height=600');
-                if (!printWindow) throw new Error('A janela de impressão foi bloqueada pelo navegador. Permita popups e tente novamente.');
-                printWindow.document.write(`
-                    <html>
-                    <head>
-                        <title>Impressão - Calculadora de Transformadores</title>
-                        <style>
-                            body { font-family: Arial, sans-serif; padding: 20px; }
-                            .print-content { font-size: 12pt; white-space: pre-wrap; }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="print-content">${text.replace(/</g, '<').replace(/>/g, '>')}</div>
-                        <script>window.print(); window.close();</script>
-                    </body>
-                    </html>
-                `);
-                printWindow.document.close();
-            } catch (e) {
-                console.error('Erro ao imprimir:', e);
-                alert('Erro ao gerar impressão: ' + e.message);
-            }
-        }
-
-        // Copiar resultados
-        function copyResult(text) {
-            try {
-                if (!text) throw new Error('Nenhum texto para copiar.');
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    return navigator.clipboard.writeText(text).then(() => {
-                        alert('Resultados copiados para a área de transferência!');
-                    }).catch(err => {
-                        throw new Error('Falha ao usar clipboard API: ' + err);
-                    });
-                }
-                // Fallback para navegadores antigos
-                const textarea = document.createElement('textarea');
-                textarea.value = text;
-                textarea.style.position = 'fixed';
-                textarea.style.opacity = '0';
-                document.body.appendChild(textarea);
-                textarea.select();
-                const success = document.execCommand('copy');
-                document.body.removeChild(textarea);
-                if (!success) throw new Error('Falha ao copiar com execCommand.');
-                alert('Resultados copiados para a área de transferência!');
-            } catch (e) {
-                console.error('Erro ao copiar:', e);
-                alert('Erro ao copiar resultados: ' + e.message);
-            }
-        }
-
-        // Salvar resultado no localStorage
-        function saveResult(result) {
-            try {
-                if (!result) return;
-                let history = JSON.parse(localStorage.getItem('transformerHistory') || '[]');
-                const timestamp = new Date().toLocaleString('pt-BR');
-                // Limita o tamanho do texto para evitar exceder o limite do localStorage
-                const texto = result.slice(0, 1000);
-                history.unshift({ id: timestamp, texto });
-                if (history.length > 3) history = history.slice(0, 3);
-                localStorage.setItem('transformerHistory', JSON.stringify(history));
-            } catch (e) {
-                console.error('Erro ao salvar resultado:', e);
-                alert('Não foi possível salvar o cálculo no histórico: ' + e.message);
-            }
-        }
-
-        // Carregar e exibir histórico
-        function loadHistory() {
-            try {
-                const historyContent = document.getElementById('historyContent'); // Corrigido ID de 'test-result' para 'historyContent'
-                const history = JSON.parse(localStorage.getItem('transformerHistory') || '[]');
-                if (!historyContent) throw new Error('Elemento historyContent não encontrado.');
-                historyContent.innerHTML = ''; // Limpa conteúdo
-                if (history.length === 0) {
-                    const p = document.createElement('p');
-                    p.textContent = 'Nenhum cálculo salvo.';
-                    historyContent.appendChild(p);
-                    return;
-                }
-                history.forEach((item, index) => {
-                    const details = document.createElement('details');
-                    const summary = document.createElement('summary');
-                    summary.textContent = `Cálculo de ${item.id}`;
-                    const resultDiv = document.createElement('div');
-                    resultDiv.className = 'history-result';
-                    resultDiv.textContent = item.texto;
-                    const buttonGroup = document.createElement('div');
-                    buttonGroup.className = 'button-group';
-
-                    // Botão Compartilhar
-                    const shareBtn = document.createElement('button');
-                    shareBtn.className = 'history-share-btn';
-                    shareBtn.innerHTML = `<svg class="whatsapp-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.17.71 4.18 1.91 5.82L2 22l4.36-1.91c1.54.94 3.27 1.44 5.08 1.44 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.18c-1.54 0-3.03-.45-4.31-1.29l-.31-.18-2.58 1.13 1.13-2.58-.18-.31c-.84-1.28-1.29-2.77-1.29-4.31 0-4.55 3.71-8.26 8.26-8.26s8.26 3.71 8.26 8.26-3.71 8.26-8.26 8.26zm4.66-5.79c-.25-.13-1.47-.73-1.7-.82-.22-.09-.38-.13-.54.13-.16.25-.62.82-.76.98-.13.16-.27.18-.51.06-.25-.13-1.05-.48-2-1.47-.74-.76-1.24-1.71-1.38-1.96-.13-.25-.01-.38.11-.51.11-.11.25-.29.38-.44.13-.16.18-.29.25-.44.07-.16.04-.31-.09-.44-.13-.13-.54-1.29-.73-1.78-.18-.47-.36-.4-.51-.4-.16 0-.31 0-.47 0-.16 0-.29.07-.42.31-.13.25-.51.98-.51 2.38 0 1.4.53 2.76 1.47 3.78.94 1.02 2.76 2.15 4.66 2.38.44.05.76-.02.98-.18.25-.18.36-.44.42-.71.07-.27.04-.51-.09-.64z"/></svg> Compartilhar no WhatsApp`;
-                    shareBtn.onclick = () => shareToWhatsApp(index);
-
-                    // Botão Imprimir
-                    const printBtn = document.createElement('button');
-                    printBtn.className = 'history-print-btn';
-                    printBtn.innerHTML = `<svg class="print-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg> Imprimir`;
-                    printBtn.onclick = () => printResult(item.texto);
-
-                    // Botão Copiar
-                    const copyBtn = document.createElement('button');
-                    copyBtn.className = 'history-copy-btn';
-                    copyBtn.innerHTML = `<svg class="copy-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg> Copiar`;
-                    copyBtn.onclick = () => copyResult(item.texto);
-
-                    buttonGroup.append(shareBtn, printBtn, copyBtn);
-                    details.append(summary, resultDiv, buttonGroup);
-                    historyContent.appendChild(details);
-                });
-            } catch (e) {
-                console.error('Erro ao carregar histórico:', e);
-                const p = document.createElement('p');
-                p.textContent = 'Erro ao carregar histórico.';
-                historyContent.appendChild(p);
-            }
-        }
-
-        // Calcular transformador
         function calcularTransformador() {
-            try {
-                // Obtém elementos do DOM
-                const vpInput = document.getElementById('vp');
-                const vsInput = document.getElementById('vs');
-                const tipoTensaoInput = document.getElementById('tipoTensao');
-                const grupoVetorialInput = document.getElementById('grupoVetorial');
-                const potenciaInput = document.getElementById('potencia');
-                const unidadePotenciaInput = document.getElementById('unidadePotencia');
-                const fatorPotenciaInput = document.getElementById('fatorPotencia');
-                const resistenciaInput = document.getElementById('resistencia');
-                const reatanciaInput = document.getElementById('reatancia');
-                const perdasCobreInput = document.getElementById('perdasCobre');
-                const perdasFerroInput = document.getElementById('perdasFerro');
-                const resultMain = document.getElementById('resultMain');
-                const popupResult = document.getElementById('popupResult');
+            const vp = parseFloat(document.getElementById('vp').value);
+            const vs = parseFloat(document.getElementById('vs').value);
+            const tipoTensao = document.getElementById('tipoTensao').value;
+            const grupoVetorial = document.getElementById('grupoVetorial').value;
+            const potencia = parseFloat(document.getElementById('potencia').value);
+            const unidadePotencia = document.getElementById('unidadePotencia').value;
+            const fatorPotencia = parseFloat(document.getElementById('fatorPotencia').value);
+            const resistencia = parseFloat(document.getElementById('resistencia').value);
+            const reatancia = parseFloat(document.getElementById('reatancia').value);
+            const perdasCobre = parseFloat(document.getElementById('perdasCobre').value);
+            const perdasFerro = parseFloat(document.getElementById('perdasFerro').value);
+            const shareBtn = document.getElementById('shareBtn');
+            const reportBtn = document.getElementById('reportBtn');
+            const resultMain = document.getElementById('resultMain');
+            const popupResult = document.getElementById('popupResult');
 
-                // Verifica se os elementos existem
-                if (!vpInput || !vsInput || !tipoTensaoInput || !grupoVetorialInput || !resultMain || !popupResult) {
-                    throw new Error('Um ou mais elementos do formulário não foram encontrados.');
-                }
+            if (isNaN(vp) || isNaN(vs) || vs === 0) {
+                alert('Insira valores válidos para as tensões.');
+                shareBtn.style.display = 'none';
+                reportBtn.style.display = 'none';
+                resultMain.innerHTML = '';
+                return;
+            }
 
-                // Obtém valores
-                const vp = parseFloat(vpInput.value);
-                const vs = parseFloat(vsInput.value);
-                const tipoTensao = tipoTensaoInput.value;
-                const grupoVetorial = grupoVetorialInput.value;
-                const potencia = parseFloat(potenciaInput.value);
-                const unidadePotencia = unidadePotenciaInput.value;
-                const fatorPotencia = parseFloat(fatorPotenciaInput.value);
-                const resistencia = parseFloat(resistenciaInput.value);
-                const reatancia = parseFloat(reatanciaInput.value);
-                const perdasCobre = parseFloat(perdasCobreInput.value);
-                const perdasFerro = parseFloat(perdasFerroInput.value);
+            const sqrt3 = Math.sqrt(3);
+            let vp_fase, vp_linha, vs_fase, vs_linha, relacao, ip, is, relacaoCorrente, defasagem, diagramaFasorial, grupoNotacao;
 
-                // Validação de inputs obrigatórios
-                if (isNaN(vp) || vp <= 0) {
-                    throw new Error('Por favor, informe uma tensão primária válida maior que zero.');
-                }
-                if (isNaN(vs) || vs <= 0) {
-                    throw new Error('Por favor, informe uma tensão secundária válida maior que zero.');
-                }
-                if (!tipoTensao) {
-                    throw new Error('Por favor, selecione o tipo de tensão.');
-                }
-                if (!grupoVetorial) {
-                    throw new Error('Por favor, selecione o grupo vetorial.');
-                }
+            // Converte potência para VA
+            let potenciaVA = potencia;
+            if (!isNaN(potencia)) {
+                if (unidadePotencia === 'kVA') potenciaVA *= 1000;
+                else if (unidadePotencia === 'MVA') potenciaVA *= 1000000;
+            }
 
-                // Validação de inputs opcionais
-                if (!isNaN(potencia) && potencia <= 0) {
-                    throw new Error('Por favor, informe uma potência válida maior que zero.');
-                }
-                if (!isNaN(fatorPotencia) && (fatorPotencia < 0 || fatorPotencia > 1)) {
-                    throw new Error('O fator de potência deve estar entre 0 e 1.');
-                }
-                if (!isNaN(resistencia) && resistencia < 0) {
-                    throw new Error('A resistência não pode ser negativa.');
-                }
-                if (!isNaN(reatancia) && reatancia < 0) {
-                    throw new Error('A reatância não pode ser negativa.');
-                }
-                if (!isNaN(perdasCobre) && perdasCobre < 0) {
-                    throw new Error('As perdas no cobre não podem ser negativas.');
-                }
-                if (!isNaN(perdasFerro) && perdasFerro < 0) {
-                    throw new Error('As perdas no ferro não podem ser negativas.');
-                }
-
-                const sqrt3 = Math.sqrt(3);
-                let vp_fase, vp_linha, vs_fase, vs_linha, relacao, ip, is, relacaoCorrente, defasagem, diagramaFasorial, grupoNotacao;
-
-                // Converte potência para VA
-                let potenciaVA = potencia;
-                if (!isNaN(potencia)) {
-                    if (unidadePotencia === 'kVA') potenciaVA *= 1000;
-                    else if (unidadePotencia === 'MVA') potenciaVA *= 1000000;
-                }
-
-                // Calcula tensões de linha e fase
-                if (tipoTensao === 'linha') {
-                    vp_linha = vp;
-                    vs_linha = vs;
-                    if (grupoVetorial === 'Y-Y') {
-                        vp_fase = vp / sqrt3;
-                        vs_fase = vs / sqrt3;
-                        relacao = vp_fase / vs_fase;
-                        defasagem = 0;
-                        grupoNotacao = 'Y-Y';
-                    } else if (grupoVetorial === 'Y-Delta') {
-                        vp_fase = vp / sqrt3;
-                        vs_fase = vs;
-                        relacao = vp_fase / vs_fase;
-                        defasagem = 30;
-                        grupoNotacao = 'Y-Delta';
-                    } else if (grupoVetorial === 'Delta-Y') {
-                        vp_fase = vp;
-                        vs_fase = vs / sqrt3;
-                        relacao = vp_fase / vs_fase;
-                        defasagem = 30;
-                        grupoNotacao = 'Delta-Y';
-                    } else if (grupoVetorial === 'Delta-Delta') {
-                        vp_fase = vp;
-                        vs_fase = vs;
-                        relacao = vp_fase / vs_fase;
-                        defasagem = 0;
-                        grupoNotacao = 'Delta-Delta';
-                    }
-                } else {
+            // Calcula tensões de linha e fase
+            if (tipoTensao === 'linha') {
+                vp_linha = vp;
+                vs_linha = vs;
+                if (grupoVetorial === 'Y-Y') {
+                    vp_fase = vp / sqrt3;
+                    vs_fase = vs / sqrt3;
+                    relacao = vp_fase / vs_fase;
+                    defasagem = 0;
+                    grupoNotacao = 'Y-Y';
+                } else if (grupoVetorial === 'Y-Delta') {
+                    vp_fase = vp / sqrt3;
+                    vs_fase = vs;
+                    relacao = vp_fase / vs_fase;
+                    defasagem = 30;
+                    grupoNotacao = 'Y-Delta';
+                } else if (grupoVetorial === 'Delta-Y') {
+                    vp_fase = vp;
+                    vs_fase = vs / sqrt3;
+                    relacao = vp_fase / vs_fase;
+                    defasagem = 30;
+                    grupoNotacao = 'Delta-Y';
+                } else if (grupoVetorial === 'Delta-Delta') {
                     vp_fase = vp;
                     vs_fase = vs;
                     relacao = vp_fase / vs_fase;
-                    if (grupoVetorial === 'Y-Y') {
-                        vp_linha = vp * sqrt3;
-                        vs_linha = vs * sqrt3;
-                        defasagem = 0;
-                        grupoNotacao = 'Y-Y';
-                    } else if (grupoVetorial === 'Y-Delta') {
-                        vp_linha = vp * sqrt3;
-                        vs_linha = vs;
-                        defasagem = 30;
-                        grupoNotacao = 'Y-Delta';
-                    } else if (grupoVetorial === 'Delta-Y') {
-                        vp_linha = vp;
-                        vs_linha = vs * sqrt3;
-                        defasagem = 30;
-                        grupoNotacao = 'Delta-Y';
-                    } else if (grupoVetorial === 'Delta-Delta') {
-                        vp_linha = vp;
-                        vs_linha = vs;
-                        defasagem = 0;
-                        grupoNotacao = 'Delta-Delta';
-                    }
+                    defasagem = 0;
+                    grupoNotacao = 'Delta-Delta';
                 }
-
-                // Calcula correntes
-                let potenciaAtiva, potenciaReativa, zEqPrim, zEqSec, quedaTensao, eficiencia, iCurtoCircuito;
-                if (!isNaN(potenciaVA)) {
-                    ip = potenciaVA / (sqrt3 * vp_linha);
-                    is = potenciaVA / (sqrt3 * vs_linha);
-                    relacaoCorrente = ip / is;
+            } else {
+                vp_fase = vp;
+                vs_fase = vs;
+                relacao = vp_fase / vs_fase;
+                if (grupoVetorial === 'Y-Y') {
+                    vp_linha = vp * sqrt3;
+                    vs_linha = vs * sqrt3;
+                    defasagem = 0;
+                    grupoNotacao = 'Y-Y';
+                } else if (grupoVetorial === 'Y-Delta') {
+                    vp_linha = vp * sqrt3;
+                    vs_linha = vs;
+                    defasagem = 30;
+                    grupoNotacao = 'Y-Delta';
+                } else if (grupoVetorial === 'Delta-Y') {
+                    vp_linha = vp;
+                    vs_linha = vs * sqrt3;
+                    defasagem = 30;
+                    grupoNotacao = 'Delta-Y';
+                } else if (grupoVetorial === 'Delta-Delta') {
+                    vp_linha = vp;
+                    vs_linha = vs;
+                    defasagem = 0;
+                    grupoNotacao = 'Delta-Delta';
                 }
-
-                // Calcula potências
-                if (!isNaN(potenciaVA) && !isNaN(fatorPotencia)) {
-                    potenciaAtiva = potenciaVA * fatorPotencia;
-                    potenciaReativa = potenciaVA * Math.sqrt(1 - fatorPotencia * fatorPotencia);
-                }
-
-                // Calcula impedância
-                if (!isNaN(resistencia) && !isNaN(reatancia)) {
-                    zEqPrim = Math.sqrt(resistencia * resistencia + reatancia * reatancia);
-                    zEqSec = zEqPrim * Math.pow(vs_fase / vp_fase, 2);
-                    if (!isNaN(is)) {
-                        quedaTensao = (is * zEqSec / vs_fase) * 100;
-                    }
-                    iCurtoCircuito = vs_fase / zEqSec;
-                }
-
-                // Calcula eficiência
-                if (!isNaN(potenciaAtiva) && !isNaN(perdasCobre) && !isNaN(perdasFerro)) {
-                    eficiencia = (potenciaAtiva / (potenciaAtiva + perdasCobre + perdasFerro)) * 100;
-                }
-
-                // Define descrição do diagrama fasorial
-                diagramaFasorial = `${grupoNotacao}: ${grupoVetorial.includes('Y-Delta') ? 'Estrela-Triângulo' : grupoVetorial.includes('Delta-Y') ? 'Triângulo-Estrela' : grupoVetorial.includes('Y-Y') ? 'Estrela-Estrela' : 'Triângulo-Triângulo'}, secundário ${defasagem === 0 ? 'em fase' : 'adianta'} ${Math.abs(defasagem)}° (relógio: ${defasagem === 0 ? '0h' : '1h'}).`;
-
-                // Monta resultado
-                let resultado = `Resultados do Transformador\n`;
-                resultado += `Grupo Vetorial: ${grupoNotacao}\n`;
-                resultado += `Relação de Transformação: ${relacao.toFixed(2)}\n`;
-                resultado += `Tensão Primária (Fase): ${vp_fase.toFixed(2)} V\n`;
-                resultado += `Tensão Primária (Linha): ${vp_linha.toFixed(2)} V\n`;
-                resultado += `Tensão Secundária (Fase): ${vs_fase.toFixed(2)} V\n`;
-                resultado += `Tensão Secundária (Linha): ${vs_linha.toFixed(2)} V\n`;
-                if (!isNaN(potenciaVA)) {
-                    resultado += `Potência Aparente: ${(potenciaVA / 1000).toFixed(2)} kVA\n`;
-                    if (!isNaN(fatorPotencia)) {
-                        resultado += `Potência Ativa: ${(potenciaAtiva / 1000).toFixed(2)} kW\n`;
-                        resultado += `Potência Reativa: ${(potenciaReativa / 1000).toFixed(2)} kvar\n`;
-                    }
-                    resultado += `Corrente Primária (Linha): ${ip.toFixed(2)} A\n`;
-                    resultado += `Corrente Secundária (Linha): ${is.toFixed(2)} A\n`;
-                    resultado += `Relação de Correntes (Ip/Is): ${relacaoCorrente.toFixed(2)}\n`;
-                }
-                if (!isNaN(zEqPrim)) {
-                    resultado += `Impedância Equivalente (Primário): ${zEqPrim.toFixed(4)} Ω\n`;
-                    resultado += `Impedância Equivalente (Secundário): ${zEqSec.toFixed(4)} Ω\n`;
-                    if (!isNaN(quedaTensao)) {
-                        resultado += `Queda de Tensão: ${quedaTensao.toFixed(2)} %\n`;
-                    }
-                    resultado += `Corrente de Curto-Circuito (Secundário): ${iCurtoCircuito.toFixed(2)} A\n`;
-                }
-                if (!isNaN(eficiencia)) {
-                    resultado += `Eficiência Aproximada: ${eficiencia.toFixed(2)} %\n`;
-                }
-                resultado += `Defasagem: ${defasagem}°\n`;
-                resultado += `Diagrama Fasorial: ${diagramaFasorial}\n`;
-
-                // Armazena resultado e dados para diagramas
-                transformerResult = resultado;
-                transformerData = { grupoVetorial, defasagem, fatorPotencia };
-
-                // Exibe resultados na página principal e no popup
-                resultMain.textContent = transformerResult;
-                popupResult.textContent = transformerResult;
-                document.getElementById('resultPopup').style.display = 'flex';
-                document.getElementById('resultButtons').classList.add('active');
-
-                // Salva resultado e atualiza histórico
-                saveResult(transformerResult);
-                loadHistory();
-            } catch (e) {
-                console.error('Erro ao calcular transformador:', e);
-                alert('Erro no cálculo: ' + e.message);
-                const resultMain = document.getElementById('resultMain');
-                if (resultMain) resultMain.textContent = '';
-                const resultButtons = document.getElementById('resultButtons');
-                if (resultButtons) resultButtons.classList.remove('active');
             }
-        }
 
-        // Compartilhar no WhatsApp (suporta histórico)
-        function shareToWhatsApp(historyIndex = null) {
-            try {
-                let resultText = transformerResult;
-                if (historyIndex !== null) {
-                    const history = JSON.parse(localStorage.getItem('transformerHistory') || '[]');
-                    if (!history[historyIndex]) throw new Error('Cálculo histórico não encontrado.');
-                    resultText = history[historyIndex].texto;
-                }
-                if (!resultText) throw new Error('Nenhum resultado disponível para compartilhar.');
-                const shareText = `Resultados do Cálculo do Transformador:\n\n${resultText}\n\nCalculadora de Transformadores criada por Carlucio Teixeira.`;
-                const encodedText = encodeURIComponent(shareText);
-                const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedText}`;
-                window.open(whatsappUrl, '_blank');
-            } catch (e) {
-                console.error('Erro ao compartilhar no WhatsApp:', e);
-                alert('Erro ao compartilhar: ' + e.message);
+            // Calcula correntes
+            let potenciaAtiva, potenciaReativa, zEqPrim, zEqSec, quedaTensao, eficiencia, iCurtoCircuito;
+            if (!isNaN(potenciaVA)) {
+                ip = potenciaVA / (vp_linha * sqrt3);
+                is = potenciaVA / (vs_linha * sqrt3);
+                relacaoCorrente = ip / is;
             }
-        }
 
-        // Desenhar diagramas
-        function desenharDiagramas(grupoVetorial, defasagem, fatorPotencia) {
-            try {
-                const fasorialSvg = document.getElementById('fasorial');
-                const ligacoesSvg = document.getElementById('ligacoes');
+            // Calcula potências
+            if (!isNaN(potenciaVA) && !isNaN(fatorPotencia) && fatorPotencia >= 0 && fatorPotencia <= 1) {
+                potenciaAtiva = potenciaVA * fatorPotencia;
+                potenciaReativa = potenciaVA * Math.sqrt(1 - fatorPotencia * fatorPotencia);
+            }
 
-                if (!fasorialSvg || !ligacoesSvg) throw new Error('Elementos SVG não encontrados.');
+            // Calcula impedância
+            if (!isNaN(resistencia) && !isNaN(reatancia)) {
+                zEqPrim = Math.sqrt(resistencia * resistencia + reatancia * reatancia);
+                zEqSec = zEqPrim * Math.pow(vs_fase / vp_fase, 2);
+                if (!isNaN(is)) {
+                    quedaTensao = (is * zEqSec / vs_fase) * 100;
+                }
+                iCurtoCircuito = vs_fase / zEqSec;
+            }
 
-                // Limpa SVGs
-                fasorialSvg.innerHTML = '';
-                ligacoesSvg.innerHTML = '';
+            // Calcula eficiência
+            if (!isNaN(potenciaAtiva) && !isNaN(perdasCobre) && !isNaN(perdasFerro)) {
+                eficiencia = (potenciaAtiva / (potenciaAtiva + perdasCobre + perdasFerro)) * 100;
+            }
 
-                if (!grupoVetorial) throw new Error('Grupo vetorial não especificado.');
+            // Define descrição do diagrama fasorial
+            diagramaFasorial = `${grupoNotacao}: ${grupoVetorial.includes('Y-Delta') ? 'Estrela-Triângulo' : grupoVetorial.includes('Delta-Y') ? 'Triângulo-Estrela' : grupoVetorial.includes('Y-Y') ? 'Estrela-Estrela' : 'Triângulo-Triângulo'}, secundário ${defasagem === 0 ? 'em fase' : 'adianta'} ${Math.abs(defasagem)}° (relógio: ${defasagem === 0 ? '0h' : '1h'}).`;
 
-                // Diagrama Fasorial
-                const cx = 125, cy = 125, r = 90, rCurr = 50;
-                const toRad = Math.PI / 180;
-                fasorialSvg.setAttribute('viewBox', '0 0 250 250');
-
-                // Eixos
-                fasorialSvg.innerHTML += `<line x1="0" y1="125" x2="250" y2="125" stroke="#d1d5db" stroke-width="1"/>`;
-                fasorialSvg.innerHTML += `<line x1="125" y1="0" x2="125" y2="250" stroke="#d1d5db" stroke-width="1"/>`;
-
-                // Fasores de tensão primários (A, B, C)
-                const angles = [0, -120, 120];
-                angles.forEach((angle, i) => {
-                    const x = cx + r * Math.cos(angle * toRad);
-                    const y = cy + r * Math.sin(angle * toRad);
-                    const label = ['A', 'B', 'C'][i];
-                    fasorialSvg.innerHTML += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#1e3a8a" stroke-width="3" marker-end="url(#arrow)"/>`;
-                    fasorialSvg.innerHTML += `<text x="${x + (x > cx ? 8 : -18)}" y="${y + (y > cy ? 18 : -8)}" font-size="14" fill="#1e3a8a">${label}</text>`;
-                });
-
-                // Fasores de tensão secundários (a, b, c)
-                angles.forEach((angle, i) => {
-                    const secAngle = angle + defasagem;
-                    const x = cx + r * Math.cos(secAngle * toRad);
-                    const y = cy + r * Math.sin(secAngle * toRad);
-                    const label = ['a', 'b', 'c'][i];
-                    fasorialSvg.innerHTML += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#dc2626" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#arrow)"/>`;
-                    fasorialSvg.innerHTML += `<text x="${x + (x > cx ? 8 : -18)}" y="${y + (y > cy ? 18 : -8)}" font-size="14" fill="#dc2626">${label}</text>`;
-                });
-
-                // Fasores de corrente (se fator de potência fornecido)
+            // Monta resultado
+            let resultado = `<details open><summary>Resultados do Transformador</summary>`;
+            resultado += `Grupo Vetorial: ${grupoNotacao}\n`;
+            resultado += `Relação de Transformação: ${relacao.toFixed(2)}\n`;
+            resultado += `Tensão Primária (Fase): ${vp_fase.toFixed(2)} V\n`;
+            resultado += `Tensão Primária (Linha): ${vp_linha.toFixed(2)} V\n`;
+            resultado += `Tensão Secundária (Fase): ${vs_fase.toFixed(2)} V\n`;
+            resultado += `Tensão Secundária (Linha): ${vs_linha.toFixed(2)} V\n`;
+            if (!isNaN(potenciaVA)) {
+                resultado += `Potência Aparente: ${(potenciaVA / 1000).toFixed(2)} kVA\n`;
                 if (!isNaN(fatorPotencia)) {
-                    const phi = Math.acos(fatorPotencia) * 180 / Math.PI;
-                    angles.forEach((angle, i) => {
-                        const primAngle = angle - phi;
-                        const x = cx + rCurr * Math.cos(primAngle * toRad);
-                        const y = cy + rCurr * Math.sin(primAngle * toRad);
-                        const label = ['Ia', 'Ib', 'Ic'][i];
-                        fasorialSvg.innerHTML += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#15803d" stroke-width="2" marker-end="url(#arrow)"/>`;
-                        fasorialSvg.innerHTML += `<text x="${x + (x > cx ? 8 : -18)}" y="${y + (y > cy ? 18 : -8)}" font-size="12" fill="#15803d">${label}</text>`;
-                    });
+                    resultado += `Potência Ativa: ${(potenciaAtiva / 1000).toFixed(2)} kW\n`;
+                    resultado += `Potência Reativa: ${(potenciaReativa / 1000).toFixed(2)} kvar\n`;
                 }
-
-                // Marcador de seta
-                fasorialSvg.innerHTML += `<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 Z" fill="currentColor"/></marker></defs>`;
-
-                // Ligações das Bobinas
-                ligacoesSvg.setAttribute('viewBox', '0 0 350 250');
-                const primConfig = grupoVetorial.split('-')[0];
-                const secConfig = grupoVetorial.split('-')[1];
-
-                // Função para desenhar bobina (ziguezague)
-                function drawCoil(x1, y1, x2, y2, terminal1, terminal2) {
-                    const dx = (x2 - x1) / 10;
-                    const dy = (y2 - y1) / 10;
-                    let path = `M${x1},${y1}`;
-                    for (let i = 1; i <= 9; i++) {
-                        const x = x1 + i * dx;
-                        const y = y1 + i * dy + (i % 2 ? 6 : -6);
-                        path += `L${x},${y}`;
-                    }
-                    path += `L${x2},${y2}`;
-                    ligacoesSvg.innerHTML += `<path d="${path}" stroke="#1f2937" stroke-width="2" fill="none"/>`;
-                    ligacoesSvg.innerHTML += `<circle cx="${x1}" cy="${y1}" r="4" fill="#1f2937"/>`;
-                    ligacoesSvg.innerHTML += `<circle cx="${x2}" cy="${y2}" r="4" fill="#1f2937"/>`;
-                    ligacoesSvg.innerHTML += `<text x="${x1 + (x1 > x2 ? -20 : 5)}" y="${y1 + (y1 > y2 ? -5 : 15)}" font-size="12" fill="#1f2937">${terminal1}</text>`;
-                    ligacoesSvg.innerHTML += `<text x="${x2 + (x2 > x1 ? 5 : -20)}" y="${y2 + (y2 > y1 ? 15 : -5)}" font-size="12" fill="#1f2937">${terminal2}</text>`;
-                }
-
-                // Função para desenhar Estrela
-                function drawStar(xOffset, label, isPrimary) {
-                    const cx = xOffset + 80, cy = 125;
-                    const points = [
-                        [cx, cy - 50, 'A1', 'A2'],
-                        [cx - 43, cy + 25, 'B1', 'B2'],
-                        [cx + 43, cy + 25, 'C1', 'C2']
-                    ];
-                    points.forEach(([x, y, t1, t2]) => {
-                        drawCoil(isPrimary ? x : cx, isPrimary ? y : cy, isPrimary ? cx : x, isPrimary ? cy : y, t1, t2);
-                    });
-                    ligacoesSvg.innerHTML += `<circle cx="${cx}" cy="${cy}" r="4" fill="#1f2937"/>`;
-                    ligacoesSvg.innerHTML += `<text x="${cx - 5}" y="${cy + 15}" font-size="12" fill="#1f2937">N</text>`;
-                    ligacoesSvg.innerHTML += `<text x="${xOffset + 10}" y="20" font-size="14" fill="#1e3a8a">${label} (Estrela)</text>`;
-                }
-
-                // Função para desenhar Delta
-                function drawDelta(xOffset, label, isPrimary) {
-                    const points = [
-                        [xOffset + 80, 60, 'A1', 'A2'],
-                        [xOffset + 37, 150, 'B1', 'B2'],
-                        [xOffset + 123, 150, 'C1', 'C2']
-                    ];
-                    for (let i = 0; i < 3; i++) {
-                        const [x1, y1, t1, t2] = points[i];
-                        const [x2, y2, t3, t4] = points[(i + 1) % 3];
-                        drawCoil(x1, y1, x2, y2, isPrimary ? t1 : t4, isPrimary ? t2 : t3);
-                    }
-                    ligacoesSvg.innerHTML += `<text x="${xOffset + 10}" y="20" font-size="14" fill="#1e3a8a">${label} (Delta)</text>`;
-                }
-
-                // Desenha primário e secundário
-                if (primConfig === 'Y') drawStar(0, 'Primário', true);
-                else drawDelta(0, 'Primário', true);
-                if (secConfig === 'Y') drawStar(175, 'Secundário', false);
-                else drawDelta(175, 'Secundário', false);
-
-                // Linha de conexão entre primário e secundário
-                ligacoesSvg.innerHTML += `<line x1="160" y1="125" x2="175" y2="125" stroke="#1f2937" stroke-width="2" stroke-dasharray="5,5"/>`;
-            } catch (e) {
-                console.error('Erro ao desenhar diagramas:', e);
-                alert('Erro ao desenhar diagramas: ' + e.message);
+                resultado += `Corrente Primária (Linha): ${ip.toFixed(2)} A\n`;
+                resultado += `Corrente Secundária (Linha): ${is.toFixed(2)} A\n`;
+                resultado += `Relação de Correntes (Ip/Is): ${relacaoCorrente.toFixed(2)}\n`;
             }
+            if (!isNaN(zEqPrim)) {
+                resultado += `Impedância Equivalente (Primário): ${zEqPrim.toFixed(4)} Ω\n`;
+                resultado += `Impedância Equivalente (Secundário): ${zEqSec.toFixed(4)} Ω\n`;
+                if (!isNaN(quedaTensao)) {
+                    resultado += `Queda de Tensão: ${quedaTensao.toFixed(2)} %\n`;
+                }
+                resultado += `Corrente de Curto-Circuito (Secundário): ${iCurtoCircuito.toFixed(2)} A\n`;
+            }
+            if (!isNaN(eficiencia)) {
+                resultado += `Eficiência Aproximada: ${eficiencia.toFixed(2)} %\n`;
+            }
+            resultado += `Defasagem: ${defasagem}°\n`;
+            resultado += `Diagrama Fasorial: ${diagramaFasorial}\n`;
+            resultado += `</details>`;
+
+            // Armazena resultado e dados para diagramas
+            transformerResult = resultado;
+            transformerData = { grupoVetorial, defasagem, fatorPotencia };
+
+            // Exibe resultados na página principal e no popup
+            resultMain.innerHTML = transformerResult;
+            popupResult.innerHTML = transformerResult;
+            document.getElementById('resultPopup').style.display = 'flex';
+            shareBtn.style.display = 'flex';
+            reportBtn.style.display = 'flex';
+        }
+
+        function shareToWhatsApp() {
+            const resultText = transformerResult || 'Nenhum resultado disponível.';
+            const shareText = `Resultados do Cálculo do Transformador:\n\n${resultText}\n\nCalculadora de Transformadores criada por Carlucio Teixeira.`;
+            const encodedText = encodeURIComponent(shareText);
+            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedText}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function desenharDiagramas(grupoVetorial, defasagem, fatorPotencia) {
+            const fasorialSvg = document.getElementById('fasorial');
+            const ligacoesSvg = document.getElementById('ligacoes');
+
+            // Limpa SVGs
+            fasorialSvg.innerHTML = '';
+            ligacoesSvg.innerHTML = '';
+
+            if (!grupoVetorial) return;
+
+            // Diagrama Fasorial
+            const cx = 125, cy = 125, r = 90, rCurr = 50;
+            const toRad = Math.PI / 180;
+            fasorialSvg.setAttribute('viewBox', '0 0 250 250');
+
+            // Eixos
+            fasorialSvg.innerHTML += `<line x1="0" y1="125" x2="250" y2="125" stroke="#d1d5db" stroke-width="1"/>`;
+            fasorialSvg.innerHTML += `<line x1="125" y1="0" x2="125" y2="250" stroke="#d1d5db" stroke-width="1"/>`;
+
+            // Fasores de tensão primários (A, B, C)
+            const angles = [0, -120, 120];
+            angles.forEach((angle, i) => {
+                const x = cx + r * Math.cos(angle * toRad);
+                const y = cy + r * Math.sin(angle * toRad);
+                const label = ['A', 'B', 'C'][i];
+                fasorialSvg.innerHTML += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#1e3a8a" stroke-width="3" marker-end="url(#arrow)"/>`;
+                fasorialSvg.innerHTML += `<text x="${x + (x > cx ? 8 : -18)}" y="${y + (y > cy ? 18 : -8)}" font-size="14" fill="#1e3a8a">${label}</text>`;
+            });
+
+            // Fasores de tensão secundários (a, b, c)
+            angles.forEach((angle, i) => {
+                const secAngle = angle + defasagem;
+                const x = cx + r * Math.cos(secAngle * toRad);
+                const y = cy + r * Math.sin(secAngle * toRad);
+                const label = ['a', 'b', 'c'][i];
+                fasorialSvg.innerHTML += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#dc2626" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#arrow)"/>`;
+                fasorialSvg.innerHTML += `<text x="${x + (x > cx ? 8 : -18)}" y="${y + (y > cy ? 18 : -8)}" font-size="14" fill="#dc2626">${label}</text>`;
+            });
+
+            // Fasores de corrente (se fator de potência fornecido)
+            if (!isNaN(fatorPotencia)) {
+                const phi = Math.acos(fatorPotencia) * 180 / Math.PI;
+                angles.forEach((angle, i) => {
+                    const primAngle = angle - phi;
+                    const x = cx + rCurr * Math.cos(primAngle * toRad);
+                    const y = cy + rCurr * Math.sin(primAngle * toRad);
+                    const label = ['Ia', 'Ib', 'Ic'][i];
+                    fasorialSvg.innerHTML += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#15803d" stroke-width="2" marker-end="url(#arrow)"/>`;
+                    fasorialSvg.innerHTML += `<text x="${x + (x > cx ? 8 : -18)}" y="${y + (y > cy ? 18 : -8)}" font-size="12" fill="#15803d">${label}</text>`;
+                });
+            }
+
+            // Marcador de seta
+            fasorialSvg.innerHTML += `<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 Z" fill="currentColor"/></marker></defs>`;
+
+            // Ligações das Bobinas
+            ligacoesSvg.setAttribute('viewBox', '0 0 350 250');
+            const primConfig = grupoVetorial.split('-')[0];
+            const secConfig = grupoVetorial.split('-')[1];
+
+            // Função para desenhar bobina (ziguezague)
+            function drawCoil(x1, y1, x2, y2, terminal1, terminal2) {
+                const dx = (x2 - x1) / 10;
+                const dy = (y2 - y1) / 10;
+                let path = `M${x1},${y1}`;
+                for (let i = 1; i <= 9; i++) {
+                    const x = x1 + i * dx;
+                    const y = y1 + i * dy + (i % 2 ? 6 : -6);
+                    path += `L${x},${y}`;
+                }
+                path += `L${x2},${y2}`;
+                ligacoesSvg.innerHTML += `<path d="${path}" stroke="#1f2937" stroke-width="2" fill="none"/>`;
+                ligacoesSvg.innerHTML += `<circle cx="${x1}" cy="${y1}" r="4" fill="#1f2937"/>`;
+                ligacoesSvg.innerHTML += `<circle cx="${x2}" cy="${y2}" r="4" fill="#1f2937"/>`;
+                ligacoesSvg.innerHTML += `<text x="${x1 + (x1 > x2 ? -20 : 5)}" y="${y1 + (y1 > y2 ? -5 : 15)}" font-size="12" fill="#1f2937">${terminal1}</text>`;
+                ligacoesSvg.innerHTML += `<text x="${x2 + (x2 > x1 ? 5 : -20)}" y="${y2 + (y2 > y1 ? 15 : -5)}" font-size="12" fill="#1f2937">${terminal2}</text>`;
+            }
+
+            // Função para desenhar Estrela
+            function drawStar(xOffset, label, isPrimary) {
+                const cx = xOffset + 80, cy = 125;
+                const points = [
+                    [cx, cy - 50, 'A1', 'A2'],
+                    [cx - 43, cy + 25, 'B1', 'B2'],
+                    [cx + 43, cy + 25, 'C1', 'C2']
+                ];
+                points.forEach(([x, y, t1, t2]) => {
+                    drawCoil(isPrimary ? x : cx, isPrimary ? y : cy, isPrimary ? cx : x, isPrimary ? cy : y, t1, t2);
+                });
+                ligacoesSvg.innerHTML += `<circle cx="${cx}" cy="${cy}" r="4" fill="#1f2937"/>`;
+                ligacoesSvg.innerHTML += `<text x="${cx - 5}" y="${cy + 15}" font-size="12" fill="#1f2937">N</text>`;
+                ligacoesSvg.innerHTML += `<text x="${xOffset + 10}" y="20" font-size="14" fill="#1e3a8a">${label} (Estrela)</text>`;
+            }
+
+            // Função para desenhar Delta
+            function drawDelta(xOffset, label, isPrimary) {
+                const points = [
+                    [xOffset + 80, 60, 'A1', 'A2'],
+                    [xOffset + 37, 150, 'B1', 'B2'],
+                    [xOffset + 123, 150, 'C1', 'C2']
+                ];
+                for (let i = 0; i < 3; i++) {
+                    const [x1, y1, t1, t2] = points[i];
+                    const [x2, y2, t3, t4] = points[(i + 1) % 3];
+                    drawCoil(x1, y1, x2, y2, isPrimary ? t1 : t4, isPrimary ? t2 : t3);
+                }
+                ligacoesSvg.innerHTML += `<text x="${xOffset + 10}" y="20" font-size="14" fill="#1e3a8a">${label} (Delta)</text>`;
+            }
+
+            // Desenha primário e secundário
+            if (primConfig === 'Y') drawStar(0, 'Primário', true);
+            else drawDelta(0, 'Primário', true);
+            if (secConfig === 'Y') drawStar(175, 'Secundário', false);
+            else drawDelta(175, 'Secundário', false);
+
+            // Linha de conexão entre primário e secundário
+            ligacoesSvg.innerHTML += `<line x1="160" y1="125" x2="175" y2="125" stroke="#1f2937" stroke-width="2" stroke-dasharray="5,5"/>`;
         }
     </script>
 </body>
