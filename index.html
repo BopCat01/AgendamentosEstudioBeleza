@@ -1,28 +1,69 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Agendamento Estúdio de Beleza</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fefefe;
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+    }
+    h2 {
+      color: #d63384;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #d63384;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #a82e6c;
+    }
+    #mensagem {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+      color: green;
+    }
+  </style>
 </head>
 <body>
-  <h1>Agende seu horário</h1>
-  
-  <label for="nome">Nome:</label>
-  <input type="text" id="nome" required><br><br>
+  <h2>Agendamento Estúdio de Beleza</h2>
+  <label for="nome">Seu nome:</label>
+  <input type="text" id="nome" placeholder="Digite seu nome" />
 
   <label for="data">Escolha a data:</label>
-  <input type="date" id="data"><br><br>
+  <input type="date" id="data" />
 
-  <label for="hora">Horários disponíveis:</label>
-  <select id="hora"></select><br><br>
+  <label for="hora">Escolha o horário:</label>
+  <select id="hora">
+    <option value="">Selecione a data primeiro</option>
+  </select>
 
   <button onclick="agendar()">Agendar</button>
 
-  <p id="mensagem"></p>
+  <div id="mensagem"></div>
 
   <script>
-    const apiUrl = "https://script.google.com/macros/s/AKfycbzvAf_7WrNz0XCnij6-65y4J3KIh8rK4RhjcUnKglR8rO0SRaqMMXM16bfRBf_JJ4a7zQ/exec"; // Substitua
-
+    const apiUrl = "https://script.google.com/macros/s/AKfycbzvAf_7WrNz0XCnij6-65y4J3KIh8rK4RhjcUnKglR8rO0SRaqMMXM16bfRBf_JJ4a7zQ/exec";
     const horariosFixos = ["09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00"];
 
     document.getElementById("data").addEventListener("change", async function () {
@@ -33,18 +74,25 @@
       const select = document.getElementById("hora");
       select.innerHTML = "";
 
-      horariosFixos.forEach(hora => {
-        if (!ocupados.includes(hora)) {
-          const option = document.createElement("option");
-          option.value = hora;
-          option.text = hora;
-          select.appendChild(option);
-        }
+      const horariosDisponiveis = horariosFixos.filter(h => !ocupados.includes(h));
+      if (horariosDisponiveis.length === 0) {
+        const opt = document.createElement("option");
+        opt.value = "";
+        opt.text = "Nenhum horário disponível";
+        select.appendChild(opt);
+        return;
+      }
+
+      horariosDisponiveis.forEach(hora => {
+        const opt = document.createElement("option");
+        opt.value = hora;
+        opt.text = hora;
+        select.appendChild(opt);
       });
     });
 
     async function agendar() {
-      const nome = document.getElementById("nome").value;
+      const nome = document.getElementById("nome").value.trim();
       const data = document.getElementById("data").value;
       const hora = document.getElementById("hora").value;
 
@@ -55,16 +103,19 @@
 
       const response = await fetch(apiUrl, {
         method: "POST",
-        body: JSON.stringify({ data, hora, nome }),
+        body: JSON.stringify({ nome, data, hora }),
         headers: {
-          "Content-Type": "application/json",
-        },
+          "Content-Type": "application/json"
+        }
       });
 
-      document.getElementById("mensagem").innerText = "Agendamento realizado com sucesso!";
-      document.getElementById("data").value = "";
-      document.getElementById("hora").innerHTML = "";
+      const resultado = await response.text();
+      document.getElementById("mensagem").innerText = resultado;
+
+      // limpar campos após agendamento
       document.getElementById("nome").value = "";
+      document.getElementById("data").value = "";
+      document.getElementById("hora").innerHTML = "<option>Selecione a data primeiro</option>";
     }
   </script>
 </body>
