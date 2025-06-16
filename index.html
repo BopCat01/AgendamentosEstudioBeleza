@@ -2,156 +2,70 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agendamento - Estúdio de Beleza</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #f4f4f4;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-    button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    #response {
-      margin-top: 20px;
-      padding: 10px;
-      border-radius: 5px;
-    }
-    .success {
-      background-color: #dff0d8;
-      color: #3c763d;
-    }
-    .error {
-      background-color: #f2dede;
-      color: #a94442;
-    }
-  </style>
+  <title>Agendamento Estúdio de Beleza</title>
 </head>
 <body>
-  <h1>Agendamento - Estúdio de Beleza</h1>
-  <form id="bookingForm">
-    <div class="form-group">
-      <label for="date">Selecione o Dia:</label>
-      <input type="date" id="date" name="date" required>
-    </div>
-    <div class="form-group">
-      <label for="time">Horários Disponíveis:</label>
-      <select id="time" name="time" required>
-        <option value="">Selecione um horário</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="name">Nome:</label>
-      <input type="text" id="name" name="name" required>
-    </div>
-    <div class="form-group">
-      <label for="service">Serviço:</label>
-      <input type="text" id="service" name="service" required>
-    </div>
-    <button type="submit">Agendar</button>
-  </form>
-  <div id="response"></div>
+  <h1>Agende seu horário</h1>
+  
+  <label for="nome">Nome:</label>
+  <input type="text" id="nome" required><br><br>
+
+  <label for="data">Escolha a data:</label>
+  <input type="date" id="data"><br><br>
+
+  <label for="hora">Horários disponíveis:</label>
+  <select id="hora"></select><br><br>
+
+  <button onclick="agendar()">Agendar</button>
+
+  <p id="mensagem"></p>
 
   <script>
-    // URL do Google Apps Script (substitua pela sua URL correta)
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwt_ac3nkFzm3vvmL4BOw8006hIaTO2Ix41GNScnMv0O7Lhh0cPD3XK8Mf6RC4mubhw/exec';
+    const apiUrl = "URL_DA_SUA_API_DO_APPS_SCRIPT"; // Substitua
 
-    // Definir data mínima como hoje
-    document.getElementById('date').min = new Date().toISOString().split('T')[0];
+    const horariosFixos = ["09:00", "10:00", "11:00", "13:00", "14:00", "15:00", "16:00"];
 
-    // Buscar horários disponíveis ao selecionar uma data
-    document.getElementById('date').addEventListener('change', function() {
-      const date = this.value;
-      fetch(`${scriptURL}?action=getAvailableTimes&date=${date}`, {
-        method: 'GET',
-        mode: 'cors'
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erro na resposta do servidor: ' + response.status);
-          }
-          return response.json();
-        })
-        .then(data => {
-          const timeSelect = document.getElementById('time');
-          timeSelect.innerHTML = '<option value="">Selecione um horário</option>';
-          data.forEach(time => {
-            const option = document.createElement('option');
-            option.value = time;
-            option.textContent = time;
-            timeSelect.appendChild(option);
-          });
-        })
-        .catch(error => {
-          console.error('Erro ao carregar horários:', error);
-          document.getElementById('response').textContent = 'Erro ao carregar horários: ' + error.message;
-          document.getElementById('response').className = 'error';
-        });
+    document.getElementById("data").addEventListener("change", async function () {
+      const data = this.value;
+      const response = await fetch(`${apiUrl}?data=${data}`);
+      const ocupados = await response.json();
+
+      const select = document.getElementById("hora");
+      select.innerHTML = "";
+
+      horariosFixos.forEach(hora => {
+        if (!ocupados.includes(hora)) {
+          const option = document.createElement("option");
+          option.value = hora;
+          option.text = hora;
+          select.appendChild(option);
+        }
+      });
     });
 
-    // Enviar formulário de agendamento
-    document.getElementById('bookingForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const date = document.getElementById('date').value;
-      const time = document.getElementById('time').value;
-      const name = document.getElementById('name').value;
-      const service = document.getElementById('service').value;
+    async function agendar() {
+      const nome = document.getElementById("nome").value;
+      const data = document.getElementById("data").value;
+      const hora = document.getElementById("hora").value;
 
-      fetch(scriptURL, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify({ action: 'bookAppointment', date, time, name, service }),
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erro na resposta do servidor: ' + response.status);
-          }
-          return response.text();
-        })
-        .then(data => {
-          document.getElementById('response').textContent = data;
-          document.getElementById('response').className = 'success';
-          document.getElementById('bookingForm').reset();
-          document.getElementById('time').innerHTML = '<option value="">Selecione um horário</option>';
-        })
-        .catch(error => {
-          console.error('Erro ao agendar:', error);
-          document.getElementById('response').textContent = 'Erro ao agendar: ' + error.message;
-          document.getElementById('response').className = 'error';
-        });
-    });
+      if (!nome || !data || !hora) {
+        alert("Preencha todos os campos!");
+        return;
+      }
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        body: JSON.stringify({ data, hora, nome }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      document.getElementById("mensagem").innerText = "Agendamento realizado com sucesso!";
+      document.getElementById("data").value = "";
+      document.getElementById("hora").innerHTML = "";
+      document.getElementById("nome").value = "";
+    }
   </script>
 </body>
 </html>
