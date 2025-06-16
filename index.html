@@ -3,20 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Transformadores</title>
+    <title>Sistema de Agendamento</title>
     <style>
-        :root {
-            --primary: #1e3a8a;
-            --secondary: #25d366;
-            --accent-red: #dc2626;
-            --accent-blue: #2563eb;
-            --text: #1f2937;
-            --bg-gradient: linear-gradient(135deg, #e0e7ff, #f3f4f6);
-            --card-bg: #ffffff;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            --border: #e5e7eb;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -24,783 +12,494 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            background: var(--bg-gradient);
-            color: var(--text);
-            line-height: 1.6;
+            padding: 20px;
         }
 
-        .calculator, .report-container {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: var(--shadow);
-            max-width: 700px;
-            width: 95%;
-            display: grid;
-            gap: 1.5rem;
-            animation: fadeIn 0.5s ease-out;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
         }
 
-        #reportPage {
-            display: none;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h2 {
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
             text-align: center;
-            color: var(--primary);
-            font-size: 1.8rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
             font-weight: 600;
-        }
-
-        .input-group {
-            display: grid;
-            gap: 0.5rem;
-        }
-
-        label {
-            font-weight: 500;
-            font-size: 0.95rem;
-            color: var(--text);
-        }
-
-        input, select {
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
+            color: #333;
             font-size: 1rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            background: #f9fafb;
         }
 
-        input:focus, select:focus {
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            border-color: #4facfe;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
         }
 
-        input::placeholder {
-            color: #9ca3af;
-            font-style: italic;
-        }
-
-        .multi-input {
+        .form-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 0.75rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
 
-        button {
-            padding: 0.75rem;
-            background: linear-gradient(to right, var(--accent-blue), #3b82f6);
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.3s;
-        }
-
-        button:hover {
-            background: linear-gradient(to right, #1e40af, #2563eb);
-            transform: scale(1.02);
-        }
-
-        #shareBtn, #reportBtn, #backBtn, #popupShareBtn {
-            background: linear-gradient(to right, var(--secondary), #2ecc71);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        #shareBtn, #reportBtn {
-            display: none;
-        }
-
-        #shareBtn:hover, #reportBtn:hover, #backBtn:hover, #popupShareBtn:hover {
-            background: linear-gradient(to right, #128c7e, var(--secondary));
-        }
-
-        .whatsapp-icon, .report-icon, .back-icon {
-            width: 1.2rem;
-            height: 1.2rem;
-            fill: white;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 1rem;
-        }
-
-        #resultMain, #result {
-            font-size: 0.9rem;
-            color: var(--text);
-            white-space: pre-wrap;
-            background: linear-gradient(to bottom, #f9fafb, #ffffff);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            border: 1px solid var(--border);
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        details {
-            margin-top: 0.5rem;
-            padding: 0.5rem;
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            background: #f9fafb;
-            transition: max-height 0.3s ease-out;
-        }
-
-        summary {
-            font-weight: 600;
-            cursor: pointer;
-            color: var(--primary);
-            padding: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        summary::before {
-            content: '';
-            display: inline-block;
-            width: 0.8rem;
-            height: 0.8rem;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231e3a8a"><path d="M6 9l6 6 6-6"/></svg>') no-repeat center;
-            background-size: contain;
-            transition: transform 0.3s;
-        }
-
-        details[open] summary::before {
-            transform: rotate(180deg);
-        }
-
-        .explanation {
-            font-size: 0.85rem;
-            color: var(--text);
-            padding: 0.5rem;
-            line-height: 1.6;
-        }
-
-        .explanation h4 {
-            margin: 0.5rem 0;
-            color: var(--primary);
-            font-size: 1rem;
-        }
-
-        .diagrams {
-            display: grid;
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        .diagram {
-            text-align: center;
-        }
-
-        .diagram h4 {
-            margin: 0.5rem 0;
-            color: var(--primary);
+            padding: 15px 30px;
+            border-radius: 12px;
             font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        svg {
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            background: var(--card-bg);
-            padding: 0.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Estilos dos Popups */
-        #welcomePopup, #resultPopup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            animation: fadeInOverlay 0.3s ease-out;
+            margin-top: 20px;
         }
 
-        .popup-content {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: var(--shadow);
-            max-width: 500px;
-            width: 90%;
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-weight: 500;
             text-align: center;
-            animation: fadeInPopup 0.3s ease-out;
-            display: grid;
-            gap: 1rem;
-            max-height: 80vh;
-            overflow-y: auto;
+            display: none;
         }
 
-        @keyframes fadeInOverlay {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
 
-        @keyframes fadeInPopup {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
 
-        .popup-content p, .popup-content #popupResult {
-            font-size: 1.1rem;
-            color: var(--text);
-            line-height: 1.5;
-            text-align: left;
-            white-space: pre-wrap;
-            padding: 1rem;
-            background: linear-gradient(to bottom, #f9fafb, #ffffff);
-            border-radius: 0.5rem;
-            border: 1px solid var(--border);
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
         }
 
-        .popup-content button {
-            padding: 0.5rem 1rem;
-            font-size: 0.95rem;
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
         }
 
-        @media (max-width: 600px) {
-            .calculator, .report-container {
-                padding: 1.5rem;
-                width: 100%;
-            }
-            h2 {
-                font-size: 1.5rem;
-            }
-            .multi-input {
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .horarios-ocupados {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .horarios-ocupados h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .horario-item {
+            background: white;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
                 grid-template-columns: 1fr;
             }
-            button {
-                font-size: 0.9rem;
+            
+            .header h1 {
+                font-size: 2rem;
             }
-            .button-group {
-                flex-direction: column;
-            }
-            svg {
-                width: 100%;
-                height: auto;
-            }
-            .popup-content {
-                padding: 1.5rem;
-                width: 95%;
-            }
-            .popup-content p, .popup-content #popupResult {
-                font-size: 0.9rem;
+            
+            .form-container {
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div id="welcomePopup">
-        <div class="popup-content">
-            <p>Bem-vindo à Calculadora de Transformadores!<br>Criada por Carlucio Teixeira.</p>
-            <button onclick="closePopup()">Fechar</button>
+    <div class="container">
+        <div class="header">
+            <h1>📅 Sistema de Agendamento</h1>
+            <p>Agende seu horário de forma rápida e segura</p>
         </div>
-    </div>
-    <div id="resultPopup">
-        <div class="popup-content">
-            <h2>Resultados do Transformador</h2>
-            <div id="popupResult"></div>
-            <div class="button-group">
-                <button id="popupShareBtn" onclick="shareToWhatsApp()">
-                    <svg class="whatsapp-icon" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.17.71 4.18 1.91 5.82L2 22l4.36-1.91c1.54.94 3.27 1.44 5.08 1.44 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.18c-1.54 0-3.03-.45-4.31-1.29l-.31-.18-2.58 1.13 1.13-2.58-.18-.31c-.84-1.28-1.29-2.77-1.29-4.31 0-4.55 3.71-8.26 8.26-8.26s8.26 3.71 8.26 8.26-3.71 8.26-8.26 8.26zm4.66-5.79c-.25-.13-1.47-.73-1.7-.82-.22-.09-.38-.13-.54.13-.16.25-.62.82-.76.98-.13.16-.27.18-.51.06-.25-.13-1.05-.48-2-1.47-.74-.76-1.24-1.71-1.38-1.96-.13-.25-.01-.38.11-.51.11-.11.25-.29.38-.44.13-.16.18-.29.25-.44.07-.16.04-.31-.09-.44-.13-.13-.54-1.29-.73-1.78-.18-.47-.36-.4-.51-.4-.16 0-.31 0-.47 0-.16 0-.29.07-.42.31-.13.25-.51.98-.51 2.38 0 1.4.53 2.76 1.47 3.78.94 1.02 2.76 2.15 4.66 2.38.44.05.76-.02.98-.18.25-.18.36-.44.42-.71.07-.27.04-.51-.09-.64z"/>
-                    </svg>
-                    Compartilhar no WhatsApp
+
+        <div class="form-container">
+            <div id="statusMessage" class="status-message"></div>
+
+            <form id="agendamentoForm">
+                <div class="form-group">
+                    <label for="nome">Nome Completo *</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="telefone">Telefone *</label>
+                        <input type="tel" id="telefone" name="telefone" required placeholder="(11) 99999-9999">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="data">Data *</label>
+                        <input type="date" id="data" name="data" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="horario">Horário *</label>
+                        <select id="horario" name="horario" required>
+                            <option value="">Selecione um horário</option>
+                            <option value="08:00">08:00</option>
+                            <option value="08:30">08:30</option>
+                            <option value="09:00">09:00</option>
+                            <option value="09:30">09:30</option>
+                            <option value="10:00">10:00</option>
+                            <option value="10:30">10:30</option>
+                            <option value="11:00">11:00</option>
+                            <option value="11:30">11:30</option>
+                            <option value="14:00">14:00</option>
+                            <option value="14:30">14:30</option>
+                            <option value="15:00">15:00</option>
+                            <option value="15:30">15:30</option>
+                            <option value="16:00">16:00</option>
+                            <option value="16:30">16:30</option>
+                            <option value="17:00">17:00</option>
+                            <option value="17:30">17:30</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="servico">Serviço *</label>
+                    <select id="servico" name="servico" required>
+                        <option value="">Selecione um serviço</option>
+                        <option value="Consulta">Consulta</option>
+                        <option value="Procedimento">Procedimento</option>
+                        <option value="Retorno">Retorno</option>
+                        <option value="Exame">Exame</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="observacoes">Observações</label>
+                    <textarea id="observacoes" name="observacoes" rows="3" placeholder="Informações adicionais (opcional)"></textarea>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">
+                    Agendar Horário
                 </button>
-                <button onclick="closeResultPopup()">Fechar</button>
-            </div>
-        </div>
-    </div>
-    <div id="mainPage" class="calculator">
-        <h2>Calculadora de Transformadores</h2>
-        <div class="input-group">
-            <label for="vp">Tensão Primária (Vp):</label>
-            <input type="number" id="vp" placeholder="Ex.: 13800 V" step="any">
-        </div>
-        <div class="input-group">
-            <label for="vs">Tensão Secundária (Vs):</label>
-            <input type="number" id="vs" placeholder="Ex.: 380 V" step="any">
-        </div>
-        <div class="input-group">
-            <label for="tipoTensao">Tipo de Tensão:</label>
-            <select id="tipoTensao">
-                <option value="linha">Linha</option>
-                <option value="fase">Fase</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <label for="grupoVetorial">Grupo Vetorial:</label>
-            <select id="grupoVetorial">
-                <option value="Y-Y">Y-Y (Estrela-Estrela)</option>
-                <option value="Y-Delta">Y-Delta (Estrela-Triângulo)</option>
-                <option value="Delta-Y">Delta-Y (Triângulo-Estrela)</option>
-                <option value="Delta-Delta">Delta-Delta (Triângulo-Triângulo)</option>
-            </select>
-        </div>
-        <div class="input-group">
-            <label>Potência Nominal:</label>
-            <div class="multi-input">
-                <input type="number" id="potencia" placeholder="Ex.: 100" step="any">
-                <select id="unidadePotencia">
-                    <option value="VA">VA</option>
-                    <option value="kVA">kVA</option>
-                    <option value="MVA">MVA</option>
-                </select>
-                <input type="number" id="fatorPotencia" placeholder="Fator de Potência (0-1)" step="0.01" min="0" max="1">
-            </div>
-        </div>
-        <div class="input-group">
-            <label>Impedância do Transformador:</label>
-            <div class="multi-input">
-                <input type="number" id="resistencia" placeholder="Resistência (Ω)" step="any">
-                <input type="number" id="reatancia" placeholder="Reatância (Ω)" step="any">
-            </div>
-        </div>
-        <div class="input-group">
-            <label>Perdas do Transformador:</label>
-            <div class="multi-input">
-                <input type="number" id="perdasCobre" placeholder="Perdas no Cobre (W)" step="any">
-                <input type="number" id="perdasFerro" placeholder="Perdas no Ferro (W)" step="any">
-            </div>
-        </div>
-        <button onclick="calcularTransformador()">Calcular</button>
-        <div id="resultMain"></div>
-        <details>
-            <summary>Explicações: Fórmulas e Ligações</summary>
-            <div class="explanation">
-                <h4>Relação de Transformação</h4>
-                <p>Calcula a razão entre tensões de fase: \( n = \frac{V_{p,fase}}{V_{s,fase}} \). Ex.: Em Y-Delta, para Vp = 13,800 V (linha) e Vs = 380 V (linha), \( n = \frac{13800/\sqrt{3}}{380} \approx 20.97 \).</p>
-                <h4>Tensões de Linha e Fase</h4>
-                <p>- <strong>Estrela (Y):</strong> \( V_{linha} = \sqrt{3} \cdot V_{fase} \), defasagem de 30°.<br>
-                   - <strong>Delta (Δ):</strong> \( V_{linha} = V_{fase} \), sem defasagem.<br>
-                   Ex.: Y-Delta, primário \( V_{p,fase} = V_{p,linha}/\sqrt{3} \), secundário \( V_{s,fase} = V_{s,linha} \).</p>
-                <h4>Correntes</h4>
-                <p>Calculadas como \( I_p = \frac{S}{\sqrt{3} \cdot V_{p,linha}} \), \( I_s = \frac{S}{\sqrt{3} \cdot V_{s,linha}} \). Relação: \( \frac{I_p}{I_s} = \frac{1}{n} \). Ex.: 100 kVA, \( I_p = \frac{100000}{\sqrt{3} \cdot 13800} \approx 4.18 A \).</p>
-                <h4>Potências</h4>
-                <p>- <strong>Aparente (S):</strong> Entrada em VA/kVA.<br>
-                   - <strong>Ativa (P):</strong> \( P = S \cdot \cos \phi \).<br>
-                   - <strong>Reativa (Q):</strong> \( Q = S \cdot \sqrt{1 - \cos^2 \phi} \).<br>
-                   Ex.: 100 kVA, \( \cos \phi = 0.8 \), \( P = 80 kW \), \( Q = 60 kvar \).</p>
-                <h4>Impedância</h4>
-                <p>Primário: \( Z_{eq,prim} = \sqrt{R^2 + X^2} \). Secundário: \( Z_{eq,sec} = Z_{eq,prim} \cdot \left(\frac{V_{s,fase}}{V_{p,fase}}\right)^2 \). Ex.: \( R = 0.1 \Omega \), \( X = 0.5 \Omega \), \( Z_{eq,prim} \approx 0.5099 \Omega \).</p>
-                <h4>Queda de Tensão</h4>
-                <p>Percentual: \( \Delta V\% = \frac{I_s \cdot Z_{eq,sec}}{V_{s,fase}} \cdot 100 \). Ex.: \( I_s = 151.93 A \), \( Z_{eq,sec} = 0.0012 \Omega \), \( V_{s,fase} = 380 V \), \( \Delta V \approx 0.05\% \).</p>
-                <h4>Eficiência</h4>
-                <p>\( \eta = \frac{P_{out}}{P_{out} + P_{cu} + P_{fe}} \cdot 100 \). Ex.: \( P_{out} = 80 kW \), \( P_{cu} = 1 kW \), \( P_{fe} = 0.5 kW \), \( \eta \approx 98.16\% \).</p>
-                <h4>Corrente de Curto-Circuito</h4>
-                <p>Secundário: \( I_{cc} = \frac{V_{s,fase}}{Z_{eq,sec}} \). Ex.: \( V_{s,fase} = 380 V \), \( Z_{eq,sec} = 0.0012 \Omega \), \( I_{cc} \approx 316666.67 A \).</p>
-                <h4>Ligações e Grupos Vetoriais</h4>
-                <p>- <strong>Estrela (Y):</strong> Bobinas conectadas a um neutro. Ideal para alta tensão.<br>
-                   - <strong>Delta (Δ):</strong> Bobinas em triângulo fechado. Robusto para curto-circuitos.<br>
-                   - <strong>Grupos:</strong><br>
-                     - <strong>Y-Y (Estrela-Estrela):</strong> 0° (relógio: 0h).<br>
-                     - <strong>Y-Delta (Estrela-Triângulo):</strong> +30° (relógio: 1h).<br>
-                     - <strong>Delta-Y (Triângulo-Estrela):</strong> +30° (relógio: 1h).<br>
-                     - <strong>Delta-Delta (Triângulo-Triângulo):</strong> 0° (relógio: 0h).<br>
-                   A defasagem indica o deslocamento angular do secundário em relação ao primário (1h = 30°).</p>
-            </div>
-        </details>
-        <div class="button-group">
-            <button id="shareBtn" onclick="shareToWhatsApp()">
-                <svg class="whatsapp-icon" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.17.71 4.18 1.91 5.82L2 22l4.36-1.91c1.54.94 3.27 1.44 5.08 1.44 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.18c-1.54 0-3.03-.45-4.31-1.29l-.31-.18-2.58 1.13 1.13-2.58-.18-.31c-.84-1.28-1.29-2.77-1.29-4.31 0-4.55 3.71-8.26 8.26-8.26s8.26 3.71 8.26 8.26-3.71 8.26-8.26 8.26zm4.66-5.79c-.25-.13-1.47-.73-1.7-.82-.22-.09-.38-.13-.54.13-.16.25-.62.82-.76.98-.13.16-.27.18-.51.06-.25-.13-1.05-.48-2-1.47-.74-.76-1.24-1.71-1.38-1.96-.13-.25-.01-.38.11-.51.11-.11.25-.29.38-.44.13-.16.18-.29.25-.44.07-.16.04-.31-.09-.44-.13-.13-.54-1.29-.73-1.78-.18-.47-.36-.4-.51-.4-.16 0-.31 0-.47 0-.16 0-.29.07-.42.31-.13.25-.51.98-.51 2.38 0 1.4.53 2.76 1.47 3.78.94 1.02 2.76 2.15 4.66 2.38.44.05.76-.02.98-.18.25-.18.36-.44.42-.71.07-.27.04-.51-.09-.64z"/>
-                </svg>
-                Compartilhar no WhatsApp
-            </button>
-            <button id="reportBtn" onclick="showReports()">
-                <svg class="report-icon" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l6 6v10c0 .55-.45 1-1 1H6c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h7v1zm-2 12H8v-2h3v2zm0-4H8V8h3v2z"/>
-                </svg>
-                Ver Relatórios
-            </button>
-        </div>
-    </div>
-    <div id="reportPage" class="report-container">
-        <h2>Relatórios do Transformador</h2>
-        <div id="result"></div>
-        <div class="button-group">
-            <button onclick="shareToWhatsApp()">
-                <svg class="whatsapp-icon" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.17.71 4.18 1.91 5.82L2 22l4.36-1.91c1.54.94 3.27 1.44 5.08 1.44 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.18c-1.54 0-3.03-.45-4.31-1.29l-.31-.18-2.58 1.13 1.13-2.58-.18-.31c-.84-1.28-1.29-2.77-1.29-4.31 0-4.55 3.71-8.26 8.26-8.26s8.26 3.71 8.26 8.26-3.71 8.26-8.26 8.26zm4.66-5.79c-.25-.13-1.47-.73-1.7-.82-.22-.09-.38-.13-.54.13-.16.25-.62.82-.76.98-.13.16-.27.18-.51.06-.25-.13-1.05-.48-2-1.47-.74-.76-1.24-1.71-1.38-1.96-.13-.25-.01-.38.11-.51.11-.11.25-.29.38-.44.13-.16.18-.29.25-.44.07-.16.04-.31-.09-.44-.13-.13-.54-1.29-.73-1.78-.18-.47-.36-.4-.51-.4-.16 0-.31 0-.47 0-.16 0-.29.07-.42.31-.13.25-.51.98-.51 2.38 0 1.4.53 2.76 1.47 3.78.94 1.02 2.76 2.15 4.66 2.38.44.05.76-.02.98-.18.25-.18.36-.44.42-.71.07-.27.04-.51-.09-.64z"/>
-                </svg>
-                Compartilhar no WhatsApp
-            </button>
-            <button id="backBtn" onclick="showMainPage()">
-                <svg class="back-icon" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                </svg>
-                Voltar
-            </button>
-        </div>
-        <div class="diagrams">
-            <div class="diagram">
-                <h4>Diagrama Fasorial</h4>
-                <svg id="fasorial" width="250" height="250"></svg>
-            </div>
-            <div class="diagram">
-                <h4>Ligações das Bobinas</h4>
-                <svg id="ligacoes" width="350" height="250"></svg>
+            </form>
+
+            <div id="horariosOcupados" class="horarios-ocupados" style="display: none;">
+                <h3>⚠️ Horários já ocupados na data selecionada:</h3>
+                <div id="listaHorariosOcupados"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // Variáveis globais para armazenar resultados
-        let transformerResult = '';
-        let transformerData = {};
+        // Configuração do Google Apps Script
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEVhJnRlyjsnAQknV4in8-3t4pNPK8UQ9wh_SUe9zytJ8XHcimNR_Nt-Nb8E47XTM-/exec';
 
-        // Exibir popup de boas-vindas ao carregar
-        window.onload = function() {
-            document.getElementById('welcomePopup').style.display = 'flex';
-        };
+        // Elementos do DOM
+        const form = document.getElementById('agendamentoForm');
+        const dataInput = document.getElementById('data');
+        const horarioSelect = document.getElementById('horario');
+        const statusMessage = document.getElementById('statusMessage');
+        const submitBtn = document.getElementById('submitBtn');
+        const horariosOcupadosDiv = document.getElementById('horariosOcupados');
+        const listaHorariosOcupados = document.getElementById('listaHorariosOcupados');
 
-        // Fechar popup de boas-vindas
-        function closePopup() {
-            document.getElementById('welcomePopup').style.display = 'none';
+        // Cache de horários ocupados
+        let horariosOcupadosCache = {};
+
+        // Configurar data mínima (hoje)
+        const hoje = new Date();
+        dataInput.min = hoje.toISOString().split('T')[0];
+
+        // Função para mostrar mensagens de status
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message status-${type}`;
+            statusMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 5000);
         }
 
-        // Fechar popup de resultados
-        function closeResultPopup() {
-            document.getElementById('resultPopup').style.display = 'none';
-        }
-
-        // Mostrar página principal
-        function showMainPage() {
-            document.getElementById('mainPage').style.display = 'block';
-            document.getElementById('reportPage').style.display = 'none';
-        }
-
-        // Mostrar página de relatórios
-        function showReports() {
-            document.getElementById('mainPage').style.display = 'none';
-            document.getElementById('reportPage').style.display = 'block';
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = transformerResult || 'Nenhum resultado disponível.';
-            resultDiv.style.opacity = '0';
-            setTimeout(() => { resultDiv.style.opacity = '1'; }, 50);
-            if (transformerData.grupoVetorial) {
-                desenharDiagramas(transformerData.grupoVetorial, transformerData.defasagem, transformerData.fatorPotencia);
-            }
-        }
-
-        function calcularTransformador() {
-            const vp = parseFloat(document.getElementById('vp').value);
-            const vs = parseFloat(document.getElementById('vs').value);
-            const tipoTensao = document.getElementById('tipoTensao').value;
-            const grupoVetorial = document.getElementById('grupoVetorial').value;
-            const potencia = parseFloat(document.getElementById('potencia').value);
-            const unidadePotencia = document.getElementById('unidadePotencia').value;
-            const fatorPotencia = parseFloat(document.getElementById('fatorPotencia').value);
-            const resistencia = parseFloat(document.getElementById('resistencia').value);
-            const reatancia = parseFloat(document.getElementById('reatancia').value);
-            const perdasCobre = parseFloat(document.getElementById('perdasCobre').value);
-            const perdasFerro = parseFloat(document.getElementById('perdasFerro').value);
-            const shareBtn = document.getElementById('shareBtn');
-            const reportBtn = document.getElementById('reportBtn');
-            const resultMain = document.getElementById('resultMain');
-            const popupResult = document.getElementById('popupResult');
-
-            if (isNaN(vp) || isNaN(vs) || vs === 0) {
-                alert('Insira valores válidos para as tensões.');
-                shareBtn.style.display = 'none';
-                reportBtn.style.display = 'none';
-                resultMain.innerHTML = '';
-                return;
-            }
-
-            const sqrt3 = Math.sqrt(3);
-            let vp_fase, vp_linha, vs_fase, vs_linha, relacao, ip, is, relacaoCorrente, defasagem, diagramaFasorial, grupoNotacao;
-
-            // Converte potência para VA
-            let potenciaVA = potencia;
-            if (!isNaN(potencia)) {
-                if (unidadePotencia === 'kVA') potenciaVA *= 1000;
-                else if (unidadePotencia === 'MVA') potenciaVA *= 1000000;
-            }
-
-            // Calcula tensões de linha e fase
-            if (tipoTensao === 'linha') {
-                vp_linha = vp;
-                vs_linha = vs;
-                if (grupoVetorial === 'Y-Y') {
-                    vp_fase = vp / sqrt3;
-                    vs_fase = vs / sqrt3;
-                    relacao = vp_fase / vs_fase;
-                    defasagem = 0;
-                    grupoNotacao = 'Y-Y';
-                } else if (grupoVetorial === 'Y-Delta') {
-                    vp_fase = vp / sqrt3;
-                    vs_fase = vs;
-                    relacao = vp_fase / vs_fase;
-                    defasagem = 30;
-                    grupoNotacao = 'Y-Delta';
-                } else if (grupoVetorial === 'Delta-Y') {
-                    vp_fase = vp;
-                    vs_fase = vs / sqrt3;
-                    relacao = vp_fase / vs_fase;
-                    defasagem = 30;
-                    grupoNotacao = 'Delta-Y';
-                } else if (grupoVetorial === 'Delta-Delta') {
-                    vp_fase = vp;
-                    vs_fase = vs;
-                    relacao = vp_fase / vs_fase;
-                    defasagem = 0;
-                    grupoNotacao = 'Delta-Delta';
+        // Função para carregar horários ocupados de uma data específica
+        async function carregarHorariosOcupados(data) {
+            try {
+                // Verificar cache primeiro
+                if (horariosOcupadosCache[data]) {
+                    return horariosOcupadosCache[data];
                 }
+
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos
+                const response = await fetch(`${SCRIPT_URL}?acao=horarios_ocupados&data=${data}`, {
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const resultado = await response.json();
+                
+                if (resultado.success) {
+                    horariosOcupadosCache[data] = resultado.horarios;
+                    return resultado.horarios;
+                } else {
+                    console.error('Erro ao carregar horários:', resultado.message);
+                    return [];
+                }
+                
+            } catch (error) {
+                console.error('Erro ao carregar horários ocupados:', error.message, error.stack);
+                showStatus(error.name === 'AbortError' ? 'Tempo de conexão esgotado.' : 'Erro ao verificar horários disponíveis.', 'warning');
+                return [];
+            }
+        }
+
+        // Função para verificar horários ocupados
+        async function verificarHorariosOcupados(dataSelecionada) {
+            showStatus('Verificando horários disponíveis...', 'warning');
+            
+            const horariosOcupados = await carregarHorariosOcupados(dataSelecionada);
+            const horariosOcupadosSimples = horariosOcupados.map(h => h.horario);
+
+            // Desabilitar horários ocupados
+            Array.from(horarioSelect.options).forEach(option => {
+                if (option.value && horariosOcupadosSimples.includes(option.value)) {
+                    option.disabled = true;
+                    option.textContent = `${option.value} (Ocupado)`;
+                } else if (option.value) {
+                    option.disabled = false;
+                    option.textContent = option.value;
+                }
+            });
+
+            // Mostrar lista de horários ocupados
+            if (horariosOcupados.length > 0) {
+                listaHorariosOcupados.innerHTML = horariosOcupados
+                    .map(h => `<div class="horario-item">${h.horario} - ${h.servico}</div>`)
+                    .join('');
+                horariosOcupadosDiv.style.display = 'block';
             } else {
-                vp_fase = vp;
-                vs_fase = vs;
-                relacao = vp_fase / vs_fase;
-                if (grupoVetorial === 'Y-Y') {
-                    vp_linha = vp * sqrt3;
-                    vs_linha = vs * sqrt3;
-                    defasagem = 0;
-                    grupoNotacao = 'Y-Y';
-                } else if (grupoVetorial === 'Y-Delta') {
-                    vp_linha = vp * sqrt3;
-                    vs_linha = vs;
-                    defasagem = 30;
-                    grupoNotacao = 'Y-Delta';
-                } else if (grupoVetorial === 'Delta-Y') {
-                    vp_linha = vp;
-                    vs_linha = vs * sqrt3;
-                    defasagem = 30;
-                    grupoNotacao = 'Delta-Y';
-                } else if (grupoVetorial === 'Delta-Delta') {
-                    vp_linha = vp;
-                    vs_linha = vs;
-                    defasagem = 0;
-                    grupoNotacao = 'Delta-Delta';
-                }
+                horariosOcupadosDiv.style.display = 'none';
             }
 
-            // Calcula correntes
-            let potenciaAtiva, potenciaReativa, zEqPrim, zEqSec, quedaTensao, eficiencia, iCurtoCircuito;
-            if (!isNaN(potenciaVA)) {
-                ip = potenciaVA / (vp_linha * sqrt3);
-                is = potenciaVA / (vs_linha * sqrt3);
-                relacaoCorrente = ip / is;
-            }
-
-            // Calcula potências
-            if (!isNaN(potenciaVA) && !isNaN(fatorPotencia) && fatorPotencia >= 0 && fatorPotencia <= 1) {
-                potenciaAtiva = potenciaVA * fatorPotencia;
-                potenciaReativa = potenciaVA * Math.sqrt(1 - fatorPotencia * fatorPotencia);
-            }
-
-            // Calcula impedância
-            if (!isNaN(resistencia) && !isNaN(reatancia)) {
-                zEqPrim = Math.sqrt(resistencia * resistencia + reatancia * reatancia);
-                zEqSec = zEqPrim * Math.pow(vs_fase / vp_fase, 2);
-                if (!isNaN(is)) {
-                    quedaTensao = (is * zEqSec / vs_fase) * 100;
-                }
-                iCurtoCircuito = vs_fase / zEqSec;
-            }
-
-            // Calcula eficiência
-            if (!isNaN(potenciaAtiva) && !isNaN(perdasCobre) && !isNaN(perdasFerro)) {
-                eficiencia = (potenciaAtiva / (potenciaAtiva + perdasCobre + perdasFerro)) * 100;
-            }
-
-            // Define descrição do diagrama fasorial
-            diagramaFasorial = `${grupoNotacao}: ${grupoVetorial.includes('Y-Delta') ? 'Estrela-Triângulo' : grupoVetorial.includes('Delta-Y') ? 'Triângulo-Estrela' : grupoVetorial.includes('Y-Y') ? 'Estrela-Estrela' : 'Triângulo-Triângulo'}, secundário ${defasagem === 0 ? 'em fase' : 'adianta'} ${Math.abs(defasagem)}° (relógio: ${defasagem === 0 ? '0h' : '1h'}).`;
-
-            // Monta resultado
-            let resultado = `<details open><summary>Resultados do Transformador</summary>`;
-            resultado += `Grupo Vetorial: ${grupoNotacao}\n`;
-            resultado += `Relação de Transformação: ${relacao.toFixed(2)}\n`;
-            resultado += `Tensão Primária (Fase): ${vp_fase.toFixed(2)} V\n`;
-            resultado += `Tensão Primária (Linha): ${vp_linha.toFixed(2)} V\n`;
-            resultado += `Tensão Secundária (Fase): ${vs_fase.toFixed(2)} V\n`;
-            resultado += `Tensão Secundária (Linha): ${vs_linha.toFixed(2)} V\n`;
-            if (!isNaN(potenciaVA)) {
-                resultado += `Potência Aparente: ${(potenciaVA / 1000).toFixed(2)} kVA\n`;
-                if (!isNaN(fatorPotencia)) {
-                    resultado += `Potência Ativa: ${(potenciaAtiva / 1000).toFixed(2)} kW\n`;
-                    resultado += `Potência Reativa: ${(potenciaReativa / 1000).toFixed(2)} kvar\n`;
-                }
-                resultado += `Corrente Primária (Linha): ${ip.toFixed(2)} A\n`;
-                resultado += `Corrente Secundária (Linha): ${is.toFixed(2)} A\n`;
-                resultado += `Relação de Correntes (Ip/Is): ${relacaoCorrente.toFixed(2)}\n`;
-            }
-            if (!isNaN(zEqPrim)) {
-                resultado += `Impedância Equivalente (Primário): ${zEqPrim.toFixed(4)} Ω\n`;
-                resultado += `Impedância Equivalente (Secundário): ${zEqSec.toFixed(4)} Ω\n`;
-                if (!isNaN(quedaTensao)) {
-                    resultado += `Queda de Tensão: ${quedaTensao.toFixed(2)} %\n`;
-                }
-                resultado += `Corrente de Curto-Circuito (Secundário): ${iCurtoCircuito.toFixed(2)} A\n`;
-            }
-            if (!isNaN(eficiencia)) {
-                resultado += `Eficiência Aproximada: ${eficiencia.toFixed(2)} %\n`;
-            }
-            resultado += `Defasagem: ${defasagem}°\n`;
-            resultado += `Diagrama Fasorial: ${diagramaFasorial}\n`;
-            resultado += `</details>`;
-
-            // Armazena resultado e dados para diagramas
-            transformerResult = resultado;
-            transformerData = { grupoVetorial, defasagem, fatorPotencia };
-
-            // Exibe resultados na página principal e no popup
-            resultMain.innerHTML = transformerResult;
-            popupResult.innerHTML = transformerResult;
-            document.getElementById('resultPopup').style.display = 'flex';
-            shareBtn.style.display = 'flex';
-            reportBtn.style.display = 'flex';
+            statusMessage.style.display = 'none';
         }
 
-        function shareToWhatsApp() {
-            const resultText = transformerResult || 'Nenhum resultado disponível.';
-            const shareText = `Resultados do Cálculo do Transformador:\n\n${resultText}\n\nCalculadora de Transformadores criada por Carlucio Teixeira.`;
-            const encodedText = encodeURIComponent(shareText);
-            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedText}`;
-            window.open(whatsappUrl, '_blank');
-        }
+        // Event listener para mudança de data
+        dataInput.addEventListener('change', function() {
+            const dataSelecionada = this.value;
+            if (dataSelecionada) {
+                verificarHorariosOcupados(dataSelecionada);
+            }
+            horarioSelect.value = '';
+        });
 
-        function desenharDiagramas(grupoVetorial, defasagem, fatorPotencia) {
-            const fasorialSvg = document.getElementById('fasorial');
-            const ligacoesSvg = document.getElementById('ligacoes');
-
-            // Limpa SVGs
-            fasorialSvg.innerHTML = '';
-            ligacoesSvg.innerHTML = '';
-
-            if (!grupoVetorial) return;
-
-            // Diagrama Fasorial
-            const cx = 125, cy = 125, r = 90, rCurr = 50;
-            const toRad = Math.PI / 180;
-            fasorialSvg.setAttribute('viewBox', '0 0 250 250');
-
-            // Eixos
-            fasorialSvg.innerHTML += `<line x1="0" y1="125" x2="250" y2="125" stroke="#d1d5db" stroke-width="1"/>`;
-            fasorialSvg.innerHTML += `<line x1="125" y1="0" x2="125" y2="250" stroke="#d1d5db" stroke-width="1"/>`;
-
-            // Fasores de tensão primários (A, B, C)
-            const angles = [0, -120, 120];
-            angles.forEach((angle, i) => {
-                const x = cx + r * Math.cos(angle * toRad);
-                const y = cy + r * Math.sin(angle * toRad);
-                const label = ['A', 'B', 'C'][i];
-                fasorialSvg.innerHTML += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#1e3a8a" stroke-width="3" marker-end="url(#arrow)"/>`;
-                fasorialSvg.innerHTML += `<text x="${x + (x > cx ? 8 : -18)}" y="${y + (y > cy ? 18 : -8)}" font-size="14" fill="#1e3a8a">${label}</text>`;
-            });
-
-            // Fasores de tensão secundários (a, b, c)
-            angles.forEach((angle, i) => {
-                const secAngle = angle + defasagem;
-                const x = cx + r * Math.cos(secAngle * toRad);
-                const y = cy + r * Math.sin(secAngle * toRad);
-                const label = ['a', 'b', 'c'][i];
-                fasorialSvg.innerHTML += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#dc2626" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#arrow)"/>`;
-                fasorialSvg.innerHTML += `<text x="${x + (x > cx ? 8 : -18)}" y="${y + (y > cy ? 18 : -8)}" font-size="14" fill="#dc2626">${label}</text>`;
-            });
-
-            // Fasores de corrente (se fator de potência fornecido)
-            if (!isNaN(fatorPotencia)) {
-                const phi = Math.acos(fatorPotencia) * 180 / Math.PI;
-                angles.forEach((angle, i) => {
-                    const primAngle = angle - phi;
-                    const x = cx + rCurr * Math.cos(primAngle * toRad);
-                    const y = cy + rCurr * Math.sin(primAngle * toRad);
-                    const label = ['Ia', 'Ib', 'Ic'][i];
-                    fasorialSvg.innerHTML += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#15803d" stroke-width="2" marker-end="url(#arrow)"/>`;
-                    fasorialSvg.innerHTML += `<text x="${x + (x > cx ? 8 : -18)}" y="${y + (y > cy ? 18 : -8)}" font-size="12" fill="#15803d">${label}</text>`;
+        // Função para enviar agendamento para o Google Apps Script
+        async function enviarAgendamento(dados) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(dados),
+                    signal: controller.signal
                 });
-            }
+                clearTimeout(timeoutId);
 
-            // Marcador de seta
-            fasorialSvg.innerHTML += `<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 Z" fill="currentColor"/></marker></defs>`;
-
-            // Ligações das Bobinas
-            ligacoesSvg.setAttribute('viewBox', '0 0 350 250');
-            const primConfig = grupoVetorial.split('-')[0];
-            const secConfig = grupoVetorial.split('-')[1];
-
-            // Função para desenhar bobina (ziguezague)
-            function drawCoil(x1, y1, x2, y2, terminal1, terminal2) {
-                const dx = (x2 - x1) / 10;
-                const dy = (y2 - y1) / 10;
-                let path = `M${x1},${y1}`;
-                for (let i = 1; i <= 9; i++) {
-                    const x = x1 + i * dx;
-                    const y = y1 + i * dy + (i % 2 ? 6 : -6);
-                    path += `L${x},${y}`;
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
-                path += `L${x2},${y2}`;
-                ligacoesSvg.innerHTML += `<path d="${path}" stroke="#1f2937" stroke-width="2" fill="none"/>`;
-                ligacoesSvg.innerHTML += `<circle cx="${x1}" cy="${y1}" r="4" fill="#1f2937"/>`;
-                ligacoesSvg.innerHTML += `<circle cx="${x2}" cy="${y2}" r="4" fill="#1f2937"/>`;
-                ligacoesSvg.innerHTML += `<text x="${x1 + (x1 > x2 ? -20 : 5)}" y="${y1 + (y1 > y2 ? -5 : 15)}" font-size="12" fill="#1f2937">${terminal1}</text>`;
-                ligacoesSvg.innerHTML += `<text x="${x2 + (x2 > x1 ? 5 : -20)}" y="${y2 + (y2 > y1 ? 15 : -5)}" font-size="12" fill="#1f2937">${terminal2}</text>`;
-            }
 
-            // Função para desenhar Estrela
-            function drawStar(xOffset, label, isPrimary) {
-                const cx = xOffset + 80, cy = 125;
-                const points = [
-                    [cx, cy - 50, 'A1', 'A2'],
-                    [cx - 43, cy + 25, 'B1', 'B2'],
-                    [cx + 43, cy + 25, 'C1', 'C2']
-                ];
-                points.forEach(([x, y, t1, t2]) => {
-                    drawCoil(isPrimary ? x : cx, isPrimary ? y : cy, isPrimary ? cx : x, isPrimary ? cy : y, t1, t2);
-                });
-                ligacoesSvg.innerHTML += `<circle cx="${cx}" cy="${cy}" r="4" fill="#1f2937"/>`;
-                ligacoesSvg.innerHTML += `<text x="${cx - 5}" y="${cy + 15}" font-size="12" fill="#1f2937">N</text>`;
-                ligacoesSvg.innerHTML += `<text x="${xOffset + 10}" y="20" font-size="14" fill="#1e3a8a">${label} (Estrela)</text>`;
-            }
-
-            // Função para desenhar Delta
-            function drawDelta(xOffset, label, isPrimary) {
-                const points = [
-                    [xOffset + 80, 60, 'A1', 'A2'],
-                    [xOffset + 37, 150, 'B1', 'B2'],
-                    [xOffset + 123, 150, 'C1', 'C2']
-                ];
-                for (let i = 0; i < 3; i++) {
-                    const [x1, y1, t1, t2] = points[i];
-                    const [x2, y2, t3, t4] = points[(i + 1) % 3];
-                    drawCoil(x1, y1, x2, y2, isPrimary ? t1 : t4, isPrimary ? t2 : t3);
+                const resultado = await response.json();
+                
+                if (resultado.success) {
+                    delete horariosOcupadosCache[dados.data];
+                    return { success: true, message: resultado.message };
+                } else {
+                    return { 
+                        success: false, 
+                        message: resultado.message,
+                        conflito: resultado.conflito 
+                    };
                 }
-                ligacoesSvg.innerHTML += `<text x="${xOffset + 10}" y="20" font-size="14" fill="#1e3a8a">${label} (Delta)</text>`;
+
+            } catch (error) {
+                console.error('Erro ao enviar agendamento:', error.message, error.stack);
+                return { 
+                    success: false, 
+                    message: error.name === 'AbortError' ? 'Tempo de conexão esgotado. Tente novamente.' : `Erro de conexão: ${error.message}`
+                };
             }
-
-            // Desenha primário e secundário
-            if (primConfig === 'Y') drawStar(0, 'Primário', true);
-            else drawDelta(0, 'Primário', true);
-            if (secConfig === 'Y') drawStar(175, 'Secundário', false);
-            else drawDelta(175, 'Secundário', false);
-
-            // Linha de conexão entre primário e secundário
-            ligacoesSvg.innerHTML += `<line x1="160" y1="125" x2="175" y2="125" stroke="#1f2937" stroke-width="2" stroke-dasharray="5,5"/>`;
         }
+
+        // Event listener para envio do formulário
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const dados = {
+                nome: formData.get('nome'),
+                telefone: formData.get('telefone'),
+                email: formData.get('email'),
+                data: formData.get('data'),
+                horario: formData.get('horario'),
+                servico: formData.get('servico'),
+                observacoes: formData.get('observacoes')
+            };
+
+            // Mostrar loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading"></span>Verificando disponibilidade...';
+
+            // Enviar dados
+            const resultado = await enviarAgendamento(dados);
+
+            if (resultado.success) {
+                showStatus(resultado.message || 'Agendamento realizado com sucesso! 🎉', 'success');
+                form.reset();
+                horariosOcupadosDiv.style.display = 'none';
+                
+                // Limpar seleções
+                horarioSelect.value = '';
+                Array.from(horarioSelect.options).forEach(option => {
+                    if (option.value) {
+                        option.disabled = false;
+                        option.textContent = option.value;
+                    }
+                });
+            } else {
+                if (resultado.conflito) {
+                    showStatus('⚠️ ' + resultado.message + ' Selecione outro horário.', 'error');
+                    // Recarregar horários ocupados para mostrar o conflito
+                    if (dados.data) {
+                        await verificarHorariosOcupados(dados.data);
+                    }
+                } else {
+                    showStatus(resultado.message || 'Erro ao realizar agendamento. Tente novamente.', 'error');
+                }
+            }
+
+            // Restaurar botão
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Agendar Horário';
+        });
+
+        // Formatação do telefone
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 11) {
+                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            } else if (value.length >= 7) {
+                value = value.replace(/(\d{2})(\d{4})(\d+)/, '($1) $2-$3');
+            } else if (value.length >= 3) {
+                value = value.replace(/(\d{2})(\d+)/, '($1) $2');
+            }
+            e.target.value = value;
+        });
+
+        // Carregar horários ocupados quando a página iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Sistema de agendamento carregado');
+            // Verificar se o script está configurado
+            if (SCRIPT_URL.includes('YOUR_SCRIPT_ID')) {
+                showStatus('⚠️ Configure a URL do Google Apps Script para usar o sistema', 'warning');
+            }
+        });
     </script>
 </body>
 </html>
