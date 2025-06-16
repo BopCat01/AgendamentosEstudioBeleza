@@ -1,0 +1,181 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendamento - Estúdio de Beleza</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #response {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .success {
+      background-color: #dff0d8;
+      color: #3c763d;
+    }
+    .error {
+      background-color: #f2dede;
+      color: #a94442;
+    }
+  </style>
+</head>
+<body>
+  <h1>Agendamento - Estúdio de Beleza</h1>
+  <form id="bookingForm">
+    <div class="form-group">
+      <label for="date">Selecione o Dia:</label>
+      <input type="date" id="date" name="date" required>
+    </div>
+    <div class="form-group">
+      <label for="time">Horários Disponíveis:</label>
+      <select id="time" name="time" required>
+        <option value="">Selecione um horário</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="name">Nome:</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+      <label for="service">Serviço:</label>
+      <input type="text" id="service" name="service" required>
+    </div>
+    <button type="submit">Agendar</button>
+  </form>
+  <div id="response"></div>
+
+  <script>
+    const scriptURL = 'SUA_URL_DO_APPS_SCRIPT'; // Substitua pela URL do Apps Script
+
+    // Definir data mínima como hoje
+    document.getElementById('date').min = new Date().toISOString().split('T')[0];
+
+    // Buscar horários disponíveis ao selecionar uma data
+    document.getElementById('date').addEventListener('change', function() {
+      const date = this.value;
+      fetch(`${scriptURL}?action=getAvailableTimes&date=${date}`)
+        .then(response => response.json())
+        .then(data => {
+          const timeSelect = document.getElementById('time');
+          timeSelect.innerHTML = '<option value="">Selecione um horário</option>';
+          data.forEach(time => {
+            const option = document.createElement('option');
+            option.value = time;
+            option.textContent = time;
+            timeSelect.appendChild(option);
+          });
+        })
+        .catch(error => {
+          console.error('Erro:', error);
+          document.getElementById('response').textContent = 'Erro ao carregar horários.';
+          document.getElementById('response').className = 'error';
+        });
+    });
+
+    // Enviar formulário de agendamento
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const name = document.getElementById('name').value;
+      const service = document.getElementById('service').value;
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'bookAppointment', date, time, name, service }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('response').textContent = data;
+          document.getElementById('response').className = 'success';
+          document.getElementById('bookingForm').reset();
+          document.getElementById('time').innerHTML = '<option value="">Selecione um horário</option>';
+        })
+        .catch(error => {
+          console.error('Erro:', error);
+          document.getElementById('response').textContent = 'Erro ao agendar.';
+          document.getElementById('response').className = 'error';
+        });
+    });
+  </script>
+</body>
+</html>
