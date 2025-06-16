@@ -1,43 +1,4 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -123,7 +84,8 @@
   <div id="response"></div>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwt_ac3nkFzm3vvmL4BOw8006hIaTO2Ix41GNScnMv0O7Lhh0cPD3XK8Mf6RC4mubhw/exec' ; // Substitua pela URL do Apps Script
+    // URL do Google Apps Script (substitua pela sua URL correta)
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwt_ac3nkFzm3vvmL4BOw8006hIaTO2Ix41GNScnMv0O7Lhh0cPD3XK8Mf6RC4mubhw/exec';
 
     // Definir data mínima como hoje
     document.getElementById('date').min = new Date().toISOString().split('T')[0];
@@ -131,8 +93,16 @@
     // Buscar horários disponíveis ao selecionar uma data
     document.getElementById('date').addEventListener('change', function() {
       const date = this.value;
-      fetch(`${scriptURL}?action=getAvailableTimes&date=${date}`)
-        .then(response => response.json())
+      fetch(`${scriptURL}?action=getAvailableTimes&date=${date}`, {
+        method: 'GET',
+        mode: 'cors'
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro na resposta do servidor: ' + response.status);
+          }
+          return response.json();
+        })
         .then(data => {
           const timeSelect = document.getElementById('time');
           timeSelect.innerHTML = '<option value="">Selecione um horário</option>';
@@ -144,8 +114,8 @@
           });
         })
         .catch(error => {
-          console.error('Erro:', error);
-          document.getElementById('response').textContent = 'Erro ao carregar horários.';
+          console.error('Erro ao carregar horários:', error);
+          document.getElementById('response').textContent = 'Erro ao carregar horários: ' + error.message;
           document.getElementById('response').className = 'error';
         });
     });
@@ -160,10 +130,16 @@
 
       fetch(scriptURL, {
         method: 'POST',
+        mode: 'cors',
         body: JSON.stringify({ action: 'bookAppointment', date, time, name, service }),
         headers: { 'Content-Type': 'application/json' }
       })
-        .then(response => response.text())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro na resposta do servidor: ' + response.status);
+          }
+          return response.text();
+        })
         .then(data => {
           document.getElementById('response').textContent = data;
           document.getElementById('response').className = 'success';
@@ -171,8 +147,8 @@
           document.getElementById('time').innerHTML = '<option value="">Selecione um horário</option>';
         })
         .catch(error => {
-          console.error('Erro:', error);
-          document.getElementById('response').textContent = 'Erro ao agendar.';
+          console.error('Erro ao agendar:', error);
+          document.getElementById('response').textContent = 'Erro ao agendar: ' + error.message;
           document.getElementById('response').className = 'error';
         });
     });
