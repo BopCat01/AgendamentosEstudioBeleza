@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Agendamentos</title>
+    <title>Estúdio de Beleza | Agendamento Online</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -37,21 +37,39 @@
         }
 
         .header p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             opacity: 0.9;
         }
 
-        .form-container {
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
             background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         label {
@@ -59,351 +77,580 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: #555;
-            font-size: 1rem;
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 20px rgba(102, 126, 234, 0.1);
-            transform: translateY(-2px);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .btn-submit {
+        .btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 18px 40px;
             border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            width: 100%;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            width: 100%;
         }
 
-        .btn-submit:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
-        .btn-submit:active {
-            transform: translateY(-1px);
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .services-grid {
+        .horarios-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
         }
 
-        .service-card {
+        .horario-slot {
+            padding: 10px;
             background: #f8f9fa;
-            padding: 20px;
-            border-radius: 12px;
-            border: 2px solid #e1e5e9;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-align: center;
         }
 
-        .service-card:hover {
+        .horario-slot:hover {
+            background: #e3f2fd;
             border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
         }
 
-        .service-card.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .horario-slot.selected {
+            background: #667eea;
             color: white;
+            border-color: #667eea;
         }
 
-        .success-message {
+        .horario-slot.occupied {
+            background: #ffebee;
+            border-color: #f44336;
+            color: #d32f2f;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .admin-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+
+        .admin-toggle {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .admin-content {
+            display: none;
+        }
+
+        .admin-content.active {
+            display: block;
+        }
+
+        .agendamentos-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .agendamento-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .agendamento-item h4 {
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .agendamento-item p {
+            margin-bottom: 3px;
+            font-size: 14px;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .message.success {
             background: #d4edda;
             color: #155724;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
             border: 1px solid #c3e6cb;
-            display: none;
         }
 
-        .error-message {
+        .message.error {
             background: #f8d7da;
             color: #721c24;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
             border: 1px solid #f5c6cb;
-            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
         }
 
         @media (max-width: 768px) {
-            .form-row {
+            .main-content {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
             
             .header h1 {
                 font-size: 2rem;
             }
             
-            .form-container {
-                padding: 25px;
+            .card {
+                padding: 20px;
             }
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            color: #667eea;
-        }
-
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            
+            .horarios-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Sistema de Agendamentos</h1>
+            <h1>✨ Estúdio de Beleza ✨</h1>
             <p>Agende seu horário de forma rápida e fácil</p>
         </div>
 
-        <div class="form-container">
-            <div id="successMessage" class="success-message">
-                ✅ Agendamento realizado com sucesso! Entraremos em contato para confirmação.
-            </div>
-            
-            <div id="errorMessage" class="error-message">
-                ❌ Erro ao realizar agendamento. Tente novamente.
-            </div>
+        <div id="message-container"></div>
 
-            <form id="agendamentoForm">
-                <div class="form-group">
-                    <label for="nome">Nome Completo *</label>
-                    <input type="text" id="nome" name="nome" required>
-                </div>
+        <div class="main-content">
+            <!-- Formulário de Agendamento -->
+            <div class="card">
+                <h2>📅 Fazer Agendamento</h2>
+                <form id="agendamento-form">
+                    <div class="form-group">
+                        <label for="cliente-nome">Nome Completo:</label>
+                        <input type="text" id="cliente-nome" required>
+                    </div>
 
-                <div class="form-row">
                     <div class="form-group">
-                        <label for="email">E-mail *</label>
-                        <input type="email" id="email" name="email" required>
+                        <label for="cliente-telefone">Telefone:</label>
+                        <input type="tel" id="cliente-telefone" required>
                     </div>
-                    <div class="form-group">
-                        <label for="telefone">Telefone *</label>
-                        <input type="tel" id="telefone" name="telefone" required>
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <label>Selecione o Serviço *</label>
-                    <div class="services-grid">
-                        <div class="service-card" data-service="consulta">
-                            <h3>Consulta</h3>
-                            <p>R$ 150,00</p>
-                        </div>
-                        <div class="service-card" data-service="retorno">
-                            <h3>Retorno</h3>
-                            <p>R$ 80,00</p>
-                        </div>
-                        <div class="service-card" data-service="exame">
-                            <h3>Exame</h3>
-                            <p>R$ 200,00</p>
-                        </div>
-                        <div class="service-card" data-service="procedimento">
-                            <h3>Procedimento</h3>
-                            <p>R$ 300,00</p>
-                        </div>
+                    <div class="form-group">
+                        <label for="cliente-email">Email:</label>
+                        <input type="email" id="cliente-email" required>
                     </div>
-                    <input type="hidden" id="servico" name="servico" required>
-                </div>
 
-                <div class="form-row">
                     <div class="form-group">
-                        <label for="data">Data Preferida *</label>
-                        <input type="date" id="data" name="data" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="horario">Horário Preferido *</label>
-                        <select id="horario" name="horario" required>
-                            <option value="">Selecione um horário</option>
-                            <option value="08:00">08:00</option>
-                            <option value="08:30">08:30</option>
-                            <option value="09:00">09:00</option>
-                            <option value="09:30">09:30</option>
-                            <option value="10:00">10:00</option>
-                            <option value="10:30">10:30</option>
-                            <option value="11:00">11:00</option>
-                            <option value="11:30">11:30</option>
-                            <option value="14:00">14:00</option>
-                            <option value="14:30">14:30</option>
-                            <option value="15:00">15:00</option>
-                            <option value="15:30">15:30</option>
-                            <option value="16:00">16:00</option>
-                            <option value="16:30">16:30</option>
-                            <option value="17:00">17:00</option>
+                        <label for="servico">Serviço:</label>
+                        <select id="servico" required>
+                            <option value="">Selecione um serviço</option>
+                            <option value="Corte de Cabelo">Corte de Cabelo</option>
+                            <option value="Manicure">Manicure</option>
+                            <option value="Pedicure">Pedicure</option>
+                            <option value="Escova">Escova</option>
+                            <option value="Hidratação">Hidratação</option>
+                            <option value="Coloração">Coloração</option>
+                            <option value="Sobrancelha">Design de Sobrancelha</option>
+                            <option value="Maquiagem">Maquiagem</option>
                         </select>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="observacoes">Observações</label>
-                    <textarea id="observacoes" name="observacoes" rows="4" placeholder="Descreva brevemente o motivo da consulta ou outras informações importantes..."></textarea>
-                </div>
+                    <div class="form-group">
+                        <label for="data">Data:</label>
+                        <input type="date" id="data" required>
+                    </div>
 
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p>Processando agendamento...</p>
-                </div>
+                    <div class="form-group">
+                        <label>Horários Disponíveis:</label>
+                        <div id="horarios-container" class="horarios-grid">
+                            <div class="loading">Selecione uma data para ver os horários</div>
+                        </div>
+                    </div>
 
-                <button type="submit" class="btn-submit">
-                    Agendar Consulta
+                    <div class="form-group">
+                        <label for="observacoes">Observações (opcional):</label>
+                        <textarea id="observacoes" rows="3" placeholder="Alguma observação especial?"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn" id="btn-agendar">
+                        💫 Confirmar Agendamento
+                    </button>
+                </form>
+            </div>
+
+            <!-- Visualização de Agendamentos -->
+            <div class="card">
+                <h2>📋 Próximos Agendamentos</h2>
+                <div id="agendamentos-publicos" class="agendamentos-list">
+                    <div class="loading">Carregando agendamentos...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel Administrativo -->
+        <div class="admin-panel">
+            <button class="admin-toggle" onclick="toggleAdmin()">🔐 Painel Administrativo</button>
+            <div id="admin-content" class="admin-content">
+                <h2>👨‍💼 Gerenciamento de Agendamentos</h2>
+                <div id="todos-agendamentos" class="agendamentos-list">
+                    <div class="loading">Carregando todos os agendamentos...</div>
+                </div>
+                <button class="btn" onclick="carregarTodosAgendamentos()" style="margin-top: 15px;">
+                    🔄 Atualizar Lista
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 
     <script>
-        // Configuração - SUBSTITUA PELA SUA URL DO GOOGLE APPS SCRIPT
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxoxUWjCEBvSNzwjj7o8i9L-Iz-OGTysgQNCU6YX_IA9MG5RJynj5E-FdenE0jUOVmRyg/exec';
+        // Configuração da API SheetDB
+        const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/pxrs21stk7vzh';
         
-        // Seleção de serviços
-        const serviceCards = document.querySelectorAll('.service-card');
-        const servicoInput = document.getElementById('servico');
-        
-        serviceCards.forEach(card => {
-            card.addEventListener('click', () => {
-                serviceCards.forEach(c => c.classList.remove('selected'));
-                card.classList.add('selected');
-                servicoInput.value = card.dataset.service;
-            });
+        // Horários disponíveis por dia
+        const HORARIOS_PADRAO = [
+            '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+            '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00'
+        ];
+
+        // Variáveis globais
+        let agendamentos = [];
+        let horarioSelecionado = null;
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            configurarDataMinima();
+            configurarEventos();
+            carregarAgendamentos();
         });
-        
-        // Configurar data mínima (hoje)
-        const dataInput = document.getElementById('data');
-        const hoje = new Date().toISOString().split('T')[0];
-        dataInput.min = hoje;
-        
-        // Formatação do telefone
-        const telefoneInput = document.getElementById('telefone');
-        telefoneInput.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length <= 11) {
-                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-                if (value.length < 14) {
-                    value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+
+        function configurarDataMinima() {
+            const hoje = new Date();
+            const dataInput = document.getElementById('data');
+            dataInput.min = hoje.toISOString().split('T')[0];
+        }
+
+        function configurarEventos() {
+            // Evento de mudança de data
+            document.getElementById('data').addEventListener('change', function() {
+                const dataSelecionada = this.value;
+                if (dataSelecionada) {
+                    carregarHorariosDisponiveis(dataSelecionada);
                 }
-            }
-            e.target.value = value;
-        });
-        
-        // Submissão do formulário
-        const form = document.getElementById('agendamentoForm');
-        const loading = document.getElementById('loading');
-        const successMessage = document.getElementById('successMessage');
-        const errorMessage = document.getElementById('errorMessage');
-        
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Validações
-            if (!servicoInput.value) {
-                alert('Por favor, selecione um serviço.');
-                return;
-            }
-            
-            // Mostrar loading
-            loading.style.display = 'block';
-            successMessage.style.display = 'none';
-            errorMessage.style.display = 'none';
-            
-            // Preparar dados
-            const formData = new FormData(form);
-            const dados = {
-                nome: formData.get('nome'),
-                email: formData.get('email'),
-                telefone: formData.get('telefone'),
-                servico: formData.get('servico'),
-                data: formData.get('data'),
-                horario: formData.get('horario'),
-                observacoes: formData.get('observacoes'),
-                timestamp: new Date().toLocaleString('pt-BR')
-            };
-            
+            });
+
+            // Evento de envio do formulário
+            document.getElementById('agendamento-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                realizarAgendamento();
+            });
+        }
+
+        async function carregarAgendamentos() {
             try {
-                // Enviar para Google Apps Script
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
+                console.log('Carregando agendamentos...');
+                const response = await fetch(SHEETDB_API_URL, {
+                    method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(dados)
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
                 });
                 
-                // Simular sucesso (no-cors não permite verificar response)
-                setTimeout(() => {
-                    loading.style.display = 'none';
-                    successMessage.style.display = 'block';
-                    form.reset();
-                    serviceCards.forEach(c => c.classList.remove('selected'));
-                    servicoInput.value = '';
-                    
-                    // Scroll para o topo
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }, 1000);
+                console.log('Status da resposta:', response.status);
                 
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Dados recebidos:', data);
+                    agendamentos = Array.isArray(data) ? data : [];
+                    exibirAgendamentosPublicos();
+                } else {
+                    console.error('Erro na resposta:', response.status, response.statusText);
+                    agendamentos = [];
+                    exibirAgendamentosPublicos();
+                }
             } catch (error) {
-                loading.style.display = 'none';
-                errorMessage.style.display = 'block';
-                console.error('Erro:', error);
+                console.error('Erro ao carregar agendamentos:', error);
+                agendamentos = [];
+                mostrarMensagem('Conectando com o servidor...', 'error');
+                exibirAgendamentosPublicos();
             }
-        });
-        
-        // Efeitos visuais
-        const inputs = document.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('focus', () => {
-                input.style.transform = 'translateY(-2px)';
+        }
+
+        function carregarHorariosDisponiveis(data) {
+            const container = document.getElementById('horarios-container');
+            container.innerHTML = '';
+
+            // Filtrar agendamentos para a data selecionada
+            const agendamentosData = agendamentos.filter(ag => ag.data === data);
+            const horariosOcupados = agendamentosData.map(ag => ag.horario);
+
+            HORARIOS_PADRAO.forEach(horario => {
+                const slot = document.createElement('div');
+                slot.className = 'horario-slot';
+                slot.textContent = horario;
+                slot.dataset.horario = horario;
+
+                if (horariosOcupados.includes(horario)) {
+                    slot.classList.add('occupied');
+                    slot.title = 'Horário já ocupado';
+                } else {
+                    slot.addEventListener('click', function() {
+                        selecionarHorario(this);
+                    });
+                }
+
+                container.appendChild(slot);
             });
+        }
+
+        function selecionarHorario(elemento) {
+            // Remove seleção anterior
+            document.querySelectorAll('.horario-slot.selected').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+
+            // Adiciona seleção atual
+            elemento.classList.add('selected');
+            horarioSelecionado = elemento.dataset.horario;
+        }
+
+        async function realizarAgendamento() {
+            const nome = document.getElementById('cliente-nome').value.trim();
+            const telefone = document.getElementById('cliente-telefone').value.trim();
+            const email = document.getElementById('cliente-email').value.trim();
+            const servico = document.getElementById('servico').value;
+            const data = document.getElementById('data').value;
+            const observacoes = document.getElementById('observacoes').value.trim();
+
+            if (!horarioSelecionado) {
+                mostrarMensagem('Por favor, selecione um horário.', 'error');
+                return;
+            }
+
+            const btnAgendar = document.getElementById('btn-agendar');
+            btnAgendar.disabled = true;
+            btnAgendar.textContent = 'Processando...';
+
+            // Criar objeto com dados do agendamento
+            const novoAgendamento = {
+                data: {
+                    nome: nome,
+                    telefone: telefone,
+                    email: email,
+                    servico: servico,
+                    data: data,
+                    horario: horarioSelecionado,
+                    observacoes: observacoes,
+                    status: 'Confirmado',
+                    dataCriacao: new Date().toLocaleString('pt-BR')
+                }
+            };
+
+            console.log('Enviando agendamento:', novoAgendamento);
+
+            try {
+                const response = await fetch(SHEETDB_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(novoAgendamento)
+                });
+
+                console.log('Status da resposta:', response.status);
+                console.log('Headers da resposta:', [...response.headers.entries()]);
+                
+                const responseText = await response.text();
+                console.log('Resposta completa:', responseText);
+                
+                if (response.ok) {
+                    let resultado;
+                    try {
+                        resultado = JSON.parse(responseText);
+                    } catch (e) {
+                        // Se não for JSON válido, considerar como sucesso se status for OK
+                        resultado = { success: true };
+                    }
+                    
+                    console.log('Resultado processado:', resultado);
+                    
+                    const dataFormatada = new Date(data).toLocaleDateString('pt-BR');
+                    mostrarMensagem(`Agendamento realizado com sucesso! 🎉\n${nome}, seu ${servico} está marcado para ${dataFormatada} às ${horarioSelecionado}.`, 'success');
+                    
+                    // Limpar formulário
+                    document.getElementById('agendamento-form').reset();
+                    horarioSelecionado = null;
+                    
+                    // Recarregar dados após um tempo
+                    setTimeout(() => {
+                        carregarAgendamentos();
+                    }, 2000);
+                    
+                    document.getElementById('horarios-container').innerHTML = 
+                        '<div class="loading">Selecione uma data para ver os horários</div>';
+                } else {
+                    console.error('Erro HTTP:', response.status, response.statusText);
+                    console.error('Resposta de erro:', responseText);
+                    throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                console.error('Erro completo:', error);
+                mostrarMensagem('Erro ao realizar agendamento. Detalhes no console (F12).', 'error');
+            } finally {
+                btnAgendar.disabled = false;
+                btnAgendar.textContent = '💫 Confirmar Agendamento';
+            }
+        }
+
+        function exibirAgendamentosPublicos() {
+            const container = document.getElementById('agendamentos-publicos');
             
-            input.addEventListener('blur', () => {
-                input.style.transform = 'translateY(0)';
-            });
-        });
+            // Filtrar apenas agendamentos futuros
+            const hoje = new Date();
+            const agendamentosFuturos = agendamentos.filter(ag => {
+                const dataAgendamento = new Date(ag.data);
+                return dataAgendamento >= hoje;
+            }).sort((a, b) => {
+                const dataA = new Date(a.data + ' ' + a.horario);
+                const dataB = new Date(b.data + ' ' + b.horario);
+                return dataA - dataB;
+            }).slice(0, 10); // Mostrar apenas os próximos 10
+
+            if (agendamentosFuturos.length === 0) {
+                container.innerHTML = '<div class="loading">Nenhum agendamento futuro encontrado.</div>';
+                return;
+            }
+
+            const html = agendamentosFuturos.map(ag => `
+                <div class="agendamento-item">
+                    <h4>${ag.servico}</h4>
+                    <p><strong>Data:</strong> ${new Date(ag.data).toLocaleDateString('pt-BR')}</p>
+                    <p><strong>Horário:</strong> ${ag.horario}</p>
+                    <p><strong>Status:</strong> ${ag.status}</p>
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+
+        function toggleAdmin() {
+            const adminContent = document.getElementById('admin-content');
+            adminContent.classList.toggle('active');
+            
+            if (adminContent.classList.contains('active')) {
+                carregarTodosAgendamentos();
+            }
+        }
+
+        async function carregarTodosAgendamentos() {
+            const container = document.getElementById('todos-agendamentos');
+            container.innerHTML = '<div class="loading">Carregando todos os agendamentos...</div>';
+
+            try {
+                const response = await fetch(SHEETDB_API_URL, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const todosAgendamentos = await response.json();
+                    console.log('Todos os agendamentos:', todosAgendamentos);
+                    
+                    if (!todosAgendamentos || todosAgendamentos.length === 0) {
+                        container.innerHTML = '<div class="loading">Nenhum agendamento encontrado.</div>';
+                        return;
+                    }
+
+                    // Ordenar por data e horário
+                    const agendamentosOrdenados = todosAgendamentos.sort((a, b) => {
+                        const dataA = new Date(a.data + ' ' + a.horario);
+                        const dataB = new Date(b.data + ' ' + b.horario);
+                        return dataB - dataA; // Mais recentes primeiro
+                    });
+
+                    const html = agendamentosOrdenados.map(ag => `
+                        <div class="agendamento-item">
+                            <h4>${ag.nome || 'Nome não informado'} - ${ag.servico || 'Serviço não informado'}</h4>
+                            <p><strong>Data:</strong> ${ag.data ? new Date(ag.data).toLocaleDateString('pt-BR') : 'Data não informada'}</p>
+                            <p><strong>Horário:</strong> ${ag.horario || 'Horário não informado'}</p>
+                            <p><strong>Telefone:</strong> ${ag.telefone || 'Não informado'}</p>
+                            <p><strong>Email:</strong> ${ag.email || 'Não informado'}</p>
+                            <p><strong>Status:</strong> ${ag.status || 'Pendente'}</p>
+                            <p><strong>Criado em:</strong> ${ag.dataCriacao || 'Não informado'}</p>
+                            ${ag.observacoes ? `<p><strong>Observações:</strong> ${ag.observacoes}</p>` : ''}
+                        </div>
+                    `).join('');
+
+                    container.innerHTML = html;
+                } else {
+                    console.error('Erro ao carregar:', response.status);
+                    container.innerHTML = '<div class="loading">Erro ao carregar agendamentos.</div>';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar agendamentos:', error);
+                container.innerHTML = '<div class="loading">Erro de conexão. Verifique sua internet.</div>';
+            }
+        }
+
+        function mostrarMensagem(texto, tipo) {
+            const container = document.getElementById('message-container');
+            const mensagem = document.createElement('div');
+            mensagem.className = `message ${tipo}`;
+            mensagem.textContent = texto;
+            
+            container.innerHTML = '';
+            container.appendChild(mensagem);
+            
+            setTimeout(() => {
+                mensagem.remove();
+            }, 5000);
+        }
     </script>
 </body>
 </html>
