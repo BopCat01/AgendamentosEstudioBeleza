@@ -729,6 +729,132 @@
             animation: fadeOut 0.5s ease-in-out forwards;
         }
 
+        /* Modal de detalhes do agendamento */
+        .agendamento-details-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .agendamento-details-modal.active {
+            display: flex;
+        }
+
+        .agendamento-details-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .agendamento-details-modal.active .agendamento-details-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .agendamento-details-info {
+            text-align: left;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(255, 250, 205, 0.2);
+            border-radius: 8px;
+            border-left: 3px solid #daa520;
+        }
+
+        .agendamento-details-info h4 {
+            color: #8b4513;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .agendamento-details-info p {
+            margin: 8px 0;
+            color: #2c1810;
+        }
+
+        .agendamento-details-info strong {
+            color: #8b4513;
+        }
+
+        .agendamento-details-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .agendamento-details-buttons .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            min-width: 120px;
+        }
+
+        .btn-whatsapp-cancel {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+        }
+
+        .btn-whatsapp-cancel:hover {
+            background: linear-gradient(135deg, #128C7E, #0d6b5c);
+        }
+
+        /* Estilo para lista de agendamentos futuros */
+        .agendamento-item {
+            background: white;
+            border: 1px solid rgba(218, 165, 32, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .agendamento-item:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: #b8860b;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(218, 165, 32, 0.15);
+        }
+
+        .agendamento-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .agendamento-item-date {
+            font-weight: 600;
+            color: #8b4513;
+        }
+
+        .agendamento-item-time {
+            background: rgba(218, 165, 32, 0.2);
+            color: #8b4513;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .agendamento-item-service {
+            color: #5a4a3a;
+            font-size: 14px;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -768,13 +894,21 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="nome">Nome Completo:</label>
-                    <input type="text" id="nome" required>
+                    <label for="telefone">Telefone:</label>
+                    <input type="tel" id="telefone" required placeholder="(11) 99999-9999">
+                </div>
+
+                <!-- Lista de agendamentos futuros (inicialmente oculta) -->
+                <div id="agendamentos-futuros" style="display: none; margin-bottom: 20px;">
+                    <div style="background: rgba(255, 250, 205, 0.3); padding: 15px; border-radius: 8px; border-left: 3px solid #daa520;">
+                        <h4 style="margin: 0 0 10px 0; color: #8b4513;">📅 Agendamentos Futuros</h4>
+                        <div id="lista-agendamentos-futuros"></div>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="telefone">Telefone:</label>
-                    <input type="tel" id="telefone" required placeholder="(11) 99999-9999">
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" required>
                 </div>
 
                 <div class="form-group">
@@ -931,6 +1065,19 @@
         </div>
     </div>
 
+    <!-- Modal de detalhes do agendamento -->
+    <div class="agendamento-details-modal" id="agendamento-details-modal">
+        <div class="agendamento-details-content">
+            <div class="agendamento-details-info" id="agendamento-details-info">
+                <!-- Detalhes do agendamento serão inseridos aqui -->
+            </div>
+            <div class="agendamento-details-buttons">
+                <button class="btn btn-cancel" onclick="closeAgendamentoDetailsModal()">🔙 Voltar e agendar</button>
+                <button class="btn btn-whatsapp-cancel" onclick="solicitarCancelamentoWhatsApp()">📱 Pedir cancelamento via WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Configurações da API Sheety
         const SHEETY_AGENDAMENTOS_API_URL = 'https://api.sheety.co/08e6cbbffee520029dcb64480d35d1a8/calendar/página1';
@@ -951,6 +1098,7 @@
         let horariosCache = new Map(); // Cache para horários por data
         let currentDateHorarios = [];
         let apiOnline = false;
+        let currentAgendamentoDetails = null; // Para armazenar detalhes do agendamento selecionado
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
@@ -970,6 +1118,9 @@
                     dateConfigContent.style.display = 'none';
                 }
             });
+            
+            // Adicionar listener para deteção de número de telefone
+            document.getElementById('telefone').addEventListener('input', detectarTelefone);
         }
 
         function setMinDate() {
@@ -1816,6 +1967,146 @@ Obrigado(a)!`;
                 console.error('Erro ao limpar horários da data:', error);
                 showMessage('Erro ao limpar horários. Tente novamente.', 'error');
             }
+        }
+
+        // Funções para deteção de telefone e agendamentos futuros
+        async function detectarTelefone() {
+            const telefoneInput = document.getElementById('telefone');
+            const telefone = telefoneInput.value.trim();
+            
+            // Limpar formatação para comparação
+            const telefoneNumeros = telefone.replace(/\D/g, '');
+            
+            // Só procurar se tiver pelo menos 10 dígitos
+            if (telefoneNumeros.length >= 10) {
+                await buscarDadosCliente(telefone);
+            } else {
+                // Limpar campos se telefone for muito curto
+                limparCamposCliente();
+                ocultarAgendamentosFuturos();
+            }
+        }
+
+        async function buscarDadosCliente(telefone) {
+            try {
+                // Buscar nos agendamentos existentes
+                const clienteEncontrado = agendamentosData.find(agendamento => 
+                    agendamento.telefone && agendamento.telefone.replace(/\D/g, '') === telefone.replace(/\D/g, '')
+                );
+
+                if (clienteEncontrado) {
+                    // Preencher campos automaticamente
+                    document.getElementById('nome').value = clienteEncontrado.nome || '';
+                    document.getElementById('email').value = clienteEncontrado.email || '';
+                    
+                    // Mostrar agendamentos futuros
+                    mostrarAgendamentosFuturos(telefone);
+                } else {
+                    // Limpar campos se não encontrar
+                    limparCamposCliente();
+                    ocultarAgendamentosFuturos();
+                }
+            } catch (error) {
+                console.error('Erro ao buscar dados do cliente:', error);
+            }
+        }
+
+        function limparCamposCliente() {
+            // Não limpar o campo telefone, apenas nome e email
+            document.getElementById('nome').value = '';
+            document.getElementById('email').value = '';
+        }
+
+        function mostrarAgendamentosFuturos(telefone) {
+            const agendamentosFuturosDiv = document.getElementById('agendamentos-futuros');
+            const listaAgendamentos = document.getElementById('lista-agendamentos-futuros');
+            
+            // Filtrar agendamentos futuros para este telefone
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0);
+            
+            const agendamentosFuturos = agendamentosData.filter(agendamento => {
+                if (!agendamento.telefone || agendamento.telefone.replace(/\D/g, '') !== telefone.replace(/\D/g, '')) {
+                    return false;
+                }
+                
+                const dataAgendamento = new Date(agendamento.data + 'T00:00:00');
+                return dataAgendamento >= hoje;
+            });
+
+            if (agendamentosFuturos.length > 0) {
+                // Ordenar por data
+                agendamentosFuturos.sort((a, b) => new Date(a.data) - new Date(b.data));
+                
+                let html = '';
+                agendamentosFuturos.forEach(agendamento => {
+                    html += `
+                        <div class="agendamento-item" onclick="mostrarDetalhesAgendamento(${agendamento.id})">
+                            <div class="agendamento-item-header">
+                                <span class="agendamento-item-date">${formatDate(agendamento.data)}</span>
+                                <span class="agendamento-item-time">${agendamento.horario}</span>
+                            </div>
+                            <div class="agendamento-item-service">${agendamento.servico}</div>
+                        </div>
+                    `;
+                });
+                
+                listaAgendamentos.innerHTML = html;
+                agendamentosFuturosDiv.style.display = 'block';
+            } else {
+                ocultarAgendamentosFuturos();
+            }
+        }
+
+        function ocultarAgendamentosFuturos() {
+            document.getElementById('agendamentos-futuros').style.display = 'none';
+        }
+
+        function mostrarDetalhesAgendamento(agendamentoId) {
+            const agendamento = agendamentosData.find(a => a.id === agendamentoId);
+            if (!agendamento) return;
+            
+            currentAgendamentoDetails = agendamento;
+            
+            const detalhesDiv = document.getElementById('agendamento-details-info');
+            detalhesDiv.innerHTML = `
+                <h4>📅 Detalhes do Agendamento</h4>
+                <p><strong>Nome:</strong> ${agendamento.nome}</p>
+                <p><strong>Telefone:</strong> ${agendamento.telefone}</p>
+                <p><strong>Email:</strong> ${agendamento.email || 'Não informado'}</p>
+                <p><strong>Serviço:</strong> ${agendamento.servico}</p>
+                <p><strong>Data:</strong> ${formatDate(agendamento.data)}</p>
+                <p><strong>Horário:</strong> ${agendamento.horario}</p>
+            `;
+            
+            document.getElementById('agendamento-details-modal').classList.add('active');
+        }
+
+        function closeAgendamentoDetailsModal() {
+            document.getElementById('agendamento-details-modal').classList.remove('active');
+            currentAgendamentoDetails = null;
+        }
+
+        function solicitarCancelamentoWhatsApp() {
+            if (!currentAgendamentoDetails) return;
+            
+            const agendamento = currentAgendamentoDetails;
+            const mensagem = `Olá! Gostaria de solicitar o cancelamento do meu agendamento:
+
+📅 *Solicitação de Cancelamento*
+👤 Nome: ${agendamento.nome}
+📞 Telefone: ${agendamento.telefone}
+💅 Serviço: ${agendamento.servico}
+📅 Data: ${formatDate(agendamento.data)}
+🕐 Horário: ${agendamento.horario}
+
+Por favor, confirme o cancelamento. Obrigado(a)!`;
+
+            const numeroWhatsApp = '5511999999999'; // Substitua pelo número do estúdio
+            const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+            
+            window.open(url, '_blank');
+            closeAgendamentoDetailsModal();
         }
 
         // Funções utilitárias
