@@ -13,38 +13,46 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f8f4e9 0%, #fff9e6 100%);
             min-height: 100vh;
-            color: #333;
+            color: #2c1810;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-in-out forwards;
         }
 
         .header {
             text-align: center;
-            color: white;
+            color: #2c1810;
             margin-bottom: 30px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 30px rgba(218, 165, 32, 0.1);
+            border: 1px solid rgba(218, 165, 32, 0.2);
         }
 
         .header h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #b8860b 0%, #daa520 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .header p {
             font-size: 1.2rem;
             opacity: 0.9;
+            color: #5a4a3a;
         }
 
         .main-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
             margin-bottom: 30px;
         }
 
@@ -52,20 +60,22 @@
             background: white;
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(218, 165, 32, 0.1);
             transition: transform 0.3s ease;
+            border: 1px solid rgba(218, 165, 32, 0.2);
         }
 
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(218, 165, 32, 0.15);
         }
 
         .card h2 {
-            color: #667eea;
+            color: #b8860b;
             margin-bottom: 20px;
             font-size: 1.5rem;
-            border-bottom: 2px solid #f0f0f0;
             padding-bottom: 10px;
+            border-bottom: 1px solid rgba(218, 165, 32, 0.3);
         }
 
         .form-group {
@@ -76,27 +86,30 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #555;
+            color: #8b4513;
         }
 
         input, select, textarea {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e0e0e0;
+            border: 1px solid #daa520;
             border-radius: 8px;
             font-size: 16px;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            background: rgba(255, 250, 205, 0.1);
+            color: #2c1810;
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #b8860b;
+            box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.1);
+            background: rgba(255, 250, 205, 0.2);
         }
 
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #daa520 0%, #ffd700 100%);
+            color: #2c1810;
             border: none;
             padding: 15px 30px;
             border-radius: 8px;
@@ -104,18 +117,24 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            width: 100%;
+            border: 1px solid rgba(218, 165, 32, 0.3);
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 20px rgba(218, 165, 32, 0.2);
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
         }
 
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
         }
 
         .horarios-grid {
@@ -127,86 +146,151 @@
 
         .horario-slot {
             padding: 10px;
-            background: #f8f9fa;
-            border: 2px solid #e0e0e0;
+            background: white;
+            border: 1px solid #daa520;
             border-radius: 8px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            color: #8b4513;
+            font-weight: 500;
         }
 
         .horario-slot:hover {
-            background: #e3f2fd;
-            border-color: #667eea;
+            background: rgba(255, 215, 0, 0.1);
+            border-color: #b8860b;
+            transform: translateY(-1px);
         }
 
         .horario-slot.selected {
-            background: #667eea;
+            background: linear-gradient(135deg, #daa520, #ffd700);
             color: white;
-            border-color: #667eea;
+            border-color: #b8860b;
         }
 
         .horario-slot.occupied {
-            background: #ffebee;
-            border-color: #f44336;
-            color: #d32f2f;
+            background: #f5f5f5;
+            border-color: #ddd;
+            color: #aaa;
             cursor: not-allowed;
-            opacity: 0.6;
+        }
+
+        /* Botão de Acesso Administrativo */
+        .admin-access-btn {
+            background: linear-gradient(135deg, #8b4513, #a0522d);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-access-btn:hover {
+            background: linear-gradient(135deg, #a0522d, #cd853f);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.2);
+        }
+
+        /* Painéis Administrativos */
+        .admin-section {
+            margin-top: 40px;
+            border-top: 2px solid rgba(218, 165, 32, 0.3);
+            padding-top: 20px;
+            display: none;
+        }
+
+        .admin-section.authenticated {
+            display: block;
+        }
+
+        .admin-toggle {
+            background: linear-gradient(135deg, #8b4513, #a0522d);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .admin-toggle:hover {
+            background: linear-gradient(135deg, #a0522d, #cd853f);
+        }
+
+        .admin-toggle::after {
+            content: '+';
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .admin-toggle.active::after {
+            content: '-';
         }
 
         .admin-panel {
             background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-top: 30px;
-        }
-
-        .admin-toggle {
-            background: #f44336;
-            color: white;
-            border: none;
-            padding: 10px 20px;
             border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
+            padding: 20px;
             margin-bottom: 20px;
-        }
-
-        .admin-content {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(218, 165, 32, 0.2);
             display: none;
         }
 
-        .admin-content.active {
+        .admin-panel.active {
             display: block;
         }
 
-        .agendamentos-list {
-            max-height: 400px;
-            overflow-y: auto;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px;
+        /* Loading Animations */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .agendamento-item {
-            background: #f8f9fa;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
+        .loading-spinner {
+            border: 4px solid rgba(218, 165, 32, 0.2);
+            border-radius: 50%;
+            border-top: 4px solid #daa520;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
         }
 
-        .agendamento-item h4 {
-            color: #667eea;
-            margin-bottom: 5px;
+        .loading-text {
+            text-align: center;
+            margin-top: 10px;
+            color: #8b4513;
+            font-style: italic;
         }
 
-        .agendamento-item p {
-            margin-bottom: 3px;
-            font-size: 14px;
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
+        /* Mensagens */
         .message {
             padding: 15px;
             border-radius: 8px;
@@ -216,27 +300,360 @@
         }
 
         .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: rgba(144, 238, 144, 0.2);
+            color: #006400;
+            border: 1px solid rgba(50, 205, 50, 0.3);
         }
 
         .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: rgba(255, 182, 193, 0.2);
+            color: #8b0000;
+            border: 1px solid rgba(220, 20, 60, 0.3);
         }
 
-        .loading {
+        .message.info {
+            background: rgba(173, 216, 230, 0.2);
+            color: #1e3a8a;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .message.warning {
+            background: rgba(255, 235, 59, 0.2);
+            color: #f57c00;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        /* Modal de Confirmação */
+        .confirmation-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .confirmation-modal.active {
+            display: flex;
+        }
+
+        .confirmation-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
             text-align: center;
-            padding: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .confirmation-modal.active .confirmation-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .confirmation-details {
+            text-align: left;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(255, 250, 205, 0.2);
+            border-radius: 8px;
+            border-left: 3px solid #daa520;
+        }
+
+        .confirmation-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Botões menores para o popup de confirmação */
+        .confirmation-buttons .btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            min-width: 100px;
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+        }
+
+        /* Modal de Login Administrativo */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .login-modal.active {
+            display: flex;
+        }
+
+        .login-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .login-modal.active .login-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .login-header h3 {
+            color: #8b4513;
+            margin-bottom: 10px;
+        }
+
+        .login-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            background: #ccc;
             color: #666;
         }
 
+        .btn-cancel:hover {
+            background: #bbb;
+        }
+
+        /* Logout button */
+        .logout-btn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(135deg, #c82333, #bd2130);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.2);
+        }
+
+        /* Configuração de Horários por Data */
+        .date-config-section {
+            margin-bottom: 20px;
+        }
+
+        .date-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: end;
+        }
+
+        .date-input-group input {
+            flex: 1;
+        }
+
+        .date-input-group button {
+            flex-shrink: 0;
+        }
+
+        .horarios-config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .horario-config-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px;
+            background: rgba(255, 250, 205, 0.3);
+            border-radius: 6px;
+            border: 1px solid rgba(218, 165, 32, 0.3);
+        }
+
+        .horario-config-item .horario-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .horario-config-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .horario-config-item label {
+            margin: 0;
+            font-size: 14px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .horario-config-item .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+
+        .horario-config-item .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .add-horario-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 250, 205, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(218, 165, 32, 0.2);
+        }
+
+        .add-horario-form {
+            display: flex;
+            gap: 10px;
+            align-items: end;
+        }
+
+        .add-horario-form input {
+            flex: 1;
+        }
+
+        .add-horario-form button {
+            flex-shrink: 0;
+        }
+
+        .selected-date-info {
+            background: rgba(255, 250, 205, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 3px solid #daa520;
+        }
+
+        .agendamentos-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .agendamentos-table th,
+        .agendamentos-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(218, 165, 32, 0.2);
+        }
+
+        .agendamentos-table th {
+            background: rgba(255, 250, 205, 0.3);
+            font-weight: 600;
+            color: #8b4513;
+        }
+
+        .agendamentos-table tr:hover {
+            background: rgba(255, 250, 205, 0.1);
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            margin: 2px;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c82333, #bd2130);
+        }
+
+        /* Botões de ação para configuração de horários */
+        .config-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .config-actions .btn {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        /* Status da API */
+        .api-status {
+            background: rgba(173, 216, 230, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .api-status.online {
+            background: rgba(144, 238, 144, 0.1);
+            border-color: rgba(50, 205, 50, 0.3);
+            color: #006400;
+        }
+
+        .api-status.offline {
+            background: rgba(255, 182, 193, 0.1);
+            border-color: rgba(220, 20, 60, 0.3);
+            color: #8b0000;
+        }
+
+        .api-status.warning {
+            background: rgba(255, 235, 59, 0.1);
+            border-color: rgba(255, 193, 7, 0.3);
+            color: #f57c00;
+        }
+
         @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-                gap: 20px;
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 20px;
             }
             
             .header h1 {
@@ -250,6 +667,87 @@
             .horarios-grid {
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             }
+
+            .date-input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .add-horario-form {
+                flex-direction: column;
+            }
+
+            .login-buttons {
+                flex-direction: column;
+            }
+
+            .agendamentos-table {
+                font-size: 14px;
+            }
+
+            .agendamentos-table th,
+            .agendamentos-table td {
+                padding: 8px;
+            }
+
+            .confirmation-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .confirmation-buttons .btn {
+                width: 100%;
+            }
+
+            .horarios-config-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .config-actions {
+                flex-direction: column;
+            }
+
+            .config-actions .btn {
+                min-width: auto;
+            }
+        }
+
+        .optional-label {
+            font-weight: normal;
+            color: #666;
+            font-size: 0.9em;
+            margin-left: 5px;
+        }
+
+        /* Efeitos de fade */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        .fade-out {
+            animation: fadeOut 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Efeito shake */
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
         }
     </style>
 </head>
@@ -257,398 +755,1088 @@
     <div class="container">
         <div class="header">
             <h1>✨ Estúdio de Beleza ✨</h1>
-            <p>Agende seu horário de forma rápida e fácil</p>
+            <p>Agende seu horário de forma rápida e elegante</p>
         </div>
 
-        <div id="message-container"></div>
-
         <div class="main-content">
-            <!-- Formulário de Agendamento -->
             <div class="card">
                 <h2>📅 Fazer Agendamento</h2>
-                <form id="agendamento-form">
-                    <div class="form-group">
-                        <label for="cliente-nome">Nome Completo:</label>
-                        <input type="text" id="cliente-nome" required>
+                
+                <!-- Status da API -->
+                <div class="api-status" id="api-status">
+                    🔄 Verificando disponibilidade de horários...
+                </div>
+                
+                <div class="form-group">
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefone">Telefone:</label>
+                    <input type="tel" id="telefone" required placeholder="(11) 99999-9999">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email: <span class="optional-label">(opcional)</span></label>
+                    <input type="email" id="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="servico">Serviço:</label>
+                    <select id="servico" required>
+                        <option value="">Selecione um serviço</option>
+                        <option value="Corte de Cabelo">Corte de Cabelo</option>
+                        <option value="Manicure">Manicure</option>
+                        <option value="Pedicure">Pedicure</option>
+                        <option value="Escova">Escova</option>
+                        <option value="Hidratação">Hidratação</option>
+                        <option value="Coloração">Coloração</option>
+                        <option value="Design de Sobrancelha">Design de Sobrancelha</option>
+                        <option value="Maquiagem">Maquiagem</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="data">Data:</label>
+                    <input type="date" id="data" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Horários Disponíveis:</label>
+                    <div id="horarios-container">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text">Selecione uma data para ver os horários</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-block" id="confirmar-btn" onclick="confirmarAgendamento()">
+                    💫 Confirmar Agendamento
+                </button>
+            </div>
+        </div>
+
+        <!-- Botão de Acesso Administrativo -->
+        <button class="admin-access-btn" onclick="showLoginModal()">
+            🔐 Acesso Administrativo
+        </button>
+
+        <!-- Seção Administrativa -->
+        <div class="admin-section" id="admin-section">
+            <button class="logout-btn" onclick="logout()">
+                🚪 Sair do Painel Administrativo
+            </button>
+
+            <!-- Painel Administrativo -->
+            <button class="admin-toggle" onclick="toggleAdminPanel('admin-panel')">
+                🔐 Painel Administrativo
+            </button>
+            <div class="admin-panel" id="admin-panel">
+                <h3>Agendamentos Cadastrados</h3>
+                <div id="agendamentos-list">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">Carregando agendamentos...</div>
+                    </div>
+                </div>
+                <button class="btn" onclick="exportarDados()">📊 Exportar Dados</button>
+            </div>
+
+            <!-- Configuração de Horários por Data -->
+            <button class="admin-toggle" onclick="toggleAdminPanel('horarios-panel')">
+                ⏰ Configuração de Horários por Data
+            </button>
+            <div class="admin-panel" id="horarios-panel">
+                <h3>📅 Configurar Horários por Data</h3>
+                <p>Configure os horários disponíveis para datas específicas. Os horários são carregados <strong>exclusivamente</strong> da planilha online.</p>
+                
+                <div class="api-status" id="admin-api-status">
+                    🔄 Verificando conexão com a planilha...
+                </div>
+                
+                <div class="date-config-section">
+                    <div class="date-input-group">
+                        <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                            <label for="config-date">Selecionar Data:</label>
+                            <input type="date" id="config-date">
+                        </div>
+                        <button class="btn" onclick="loadDateConfig()">🔄 Carregar</button>
+                    </div>
+                </div>
+
+                <div id="date-config-content" style="display: none;">
+                    <div class="selected-date-info">
+                        <h4>📅 Data Selecionada: <span id="selected-date-display"></span></h4>
+                        <p>Configure os horários disponíveis para esta data específica. Os horários são salvos <strong>exclusivamente</strong> na planilha online.</p>
                     </div>
 
-                    <div class="form-group">
-                        <label for="cliente-telefone">Telefone:</label>
-                        <input type="tel" id="cliente-telefone" required>
+                    <div class="horarios-config-grid" id="horarios-config-grid">
+                        <!-- Horários serão carregados aqui -->
                     </div>
 
-                    <div class="form-group">
-                        <label for="cliente-email">Email:</label>
-                        <input type="email" id="cliente-email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="servico">Serviço:</label>
-                        <select id="servico" required>
-                            <option value="">Selecione um serviço</option>
-                            <option value="Corte de Cabelo">Corte de Cabelo</option>
-                            <option value="Manicure">Manicure</option>
-                            <option value="Pedicure">Pedicure</option>
-                            <option value="Escova">Escova</option>
-                            <option value="Hidratação">Hidratação</option>
-                            <option value="Coloração">Coloração</option>
-                            <option value="Sobrancelha">Design de Sobrancelha</option>
-                            <option value="Maquiagem">Maquiagem</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="data">Data:</label>
-                        <input type="date" id="data" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Horários Disponíveis:</label>
-                        <div id="horarios-container" class="horarios-grid">
-                            <div class="loading">Selecione uma data para ver os horários</div>
+                    <div class="add-horario-section">
+                        <h4>➕ Adicionar Novo Horário</h4>
+                        <div class="add-horario-form">
+                            <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                                <input type="time" id="novo-horario" placeholder="Ex: 09:00">
+                            </div>
+                            <button class="btn" onclick="addHorarioToDate()">Adicionar</button>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="observacoes">Observações (opcional):</label>
-                        <textarea id="observacoes" rows="3" placeholder="Alguma observação especial?"></textarea>
+                    <div class="config-actions">
+                        <button class="btn" onclick="saveHorariosConfig()">💾 Salvar na Planilha</button>
+                        <button class="btn btn-danger" onclick="clearDateHorarios()">🗑️ Limpar Todos os Horários</button>
                     </div>
-
-                    <button type="submit" class="btn" id="btn-agendar">
-                        💫 Confirmar Agendamento
-                    </button>
-                </form>
-            </div>
-
-            <!-- Visualização de Agendamentos -->
-            <div class="card">
-                <h2>📋 Próximos Agendamentos</h2>
-                <div id="agendamentos-publicos" class="agendamentos-list">
-                    <div class="loading">Carregando agendamentos...</div>
                 </div>
             </div>
         </div>
 
-        <!-- Painel Administrativo -->
-        <div class="admin-panel">
-            <button class="admin-toggle" onclick="toggleAdmin()">🔐 Painel Administrativo</button>
-            <div id="admin-content" class="admin-content">
-                <h2>👨‍💼 Gerenciamento de Agendamentos</h2>
-                <div id="todos-agendamentos" class="agendamentos-list">
-                    <div class="loading">Carregando todos os agendamentos...</div>
-                </div>
-                <button class="btn" onclick="carregarTodosAgendamentos()" style="margin-top: 15px;">
-                    🔄 Atualizar Lista
-                </button>
+    <!-- Modal de Confirmação -->
+    <div class="confirmation-modal" id="confirmation-modal">
+        <div class="confirmation-content">
+            <h3>✅ Confirmar Agendamento</h3>
+            <div class="confirmation-details" id="confirmation-details">
+                <!-- Detalhes do agendamento serão inseridos aqui -->
+            </div>
+            <div class="confirmation-buttons">
+                <button class="btn btn-cancel" onclick="closeConfirmationModal()">Cancelar</button>
+                <button class="btn" id="finalizar-btn" onclick="finalizarAgendamento()">Confirmar</button>
+                <button class="btn btn-whatsapp" id="whatsapp-btn" onclick="enviarWhatsAppEFechar()" style="display: none;">📱 Enviar pelo WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Login Administrativo -->
+    <div class="login-modal" id="login-modal">
+        <div class="login-content">
+            <div class="login-header">
+                <h3>🔐 Acesso Administrativo</h3>
+                <p>Digite suas credenciais para acessar o painel</p>
+            </div>
+            <div class="form-group">
+                <label for="admin-user">Usuário:</label>
+                <input type="text" id="admin-user">
+            </div>
+            <div class="form-group">
+                <label for="admin-password">Senha:</label>
+                <input type="password" id="admin-password">
+            </div>
+            <div class="login-buttons">
+                <button class="btn btn-cancel" onclick="closeLoginModal()">Cancelar</button>
+                <button class="btn" onclick="authenticateAdmin()">Entrar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Configuração da API SheetDB
-        const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/pxrs21stk7vzh';
+        // Configurações da API Sheety
+        const SHEETY_AGENDAMENTOS_API_URL = 'https://api.sheety.co/08e6cbbffee520029dcb64480d35d1a8/calendar/página1';
+        const SHEETY_HORARIOS_API_URL = 'https://api.sheety.co/08e6cbbffee520029dcb64480d35d1a8/calendar2025/sheet1';
         
-        // Horários disponíveis por dia
-        const HORARIOS_PADRAO = [
-            '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
-            '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00'
-        ];
+        // Credenciais administrativas
+        const ADMIN_CREDENTIALS = {
+            username: 'admin',
+            password: 'studio123'
+        };
 
-        // Variáveis globais
-        let agendamentos = [];
-        let horarioSelecionado = null;
+        // Estado da aplicação
+        let isAuthenticated = false;
+        let selectedHorario = null;
+        let agendamentosData = [];
+        let currentConfigDate = null;
+        let isProcessing = false;
+        let horariosCache = new Map(); // Cache para horários por data
+        let currentDateHorarios = [];
+        let apiOnline = false;
 
         // Inicialização
         document.addEventListener('DOMContentLoaded', function() {
-            configurarDataMinima();
-            configurarEventos();
-            carregarAgendamentos();
+            setupEventListeners();
+            loadAgendamentos();
+            checkAPIStatus();
+            setMinDate();
         });
 
-        function configurarDataMinima() {
-            const hoje = new Date();
-            const dataInput = document.getElementById('data');
-            dataInput.min = hoje.toISOString().split('T')[0];
-        }
-
-        function configurarEventos() {
-            // Evento de mudança de data
-            document.getElementById('data').addEventListener('change', function() {
-                const dataSelecionada = this.value;
-                if (dataSelecionada) {
-                    carregarHorariosDisponiveis(dataSelecionada);
+        function setupEventListeners() {
+            document.getElementById('data').addEventListener('change', loadHorarios);
+            document.getElementById('config-date').addEventListener('change', function() {
+                const dateConfigContent = document.getElementById('date-config-content');
+                if (this.value) {
+                    dateConfigContent.style.display = 'block';
+                } else {
+                    dateConfigContent.style.display = 'none';
                 }
             });
-
-            // Evento de envio do formulário
-            document.getElementById('agendamento-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                realizarAgendamento();
-            });
         }
 
-        async function carregarAgendamentos() {
+        function setMinDate() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const minDate = tomorrow.toISOString().split('T')[0];
+            document.getElementById('data').min = minDate;
+            document.getElementById('config-date').min = minDate;
+        }
+
+        // Função para converter data do formato YYYY-MM-DD para DD/MM/YY
+        function formatDateToSheetFormat(dateString) {
+            const [year, month, day] = dateString.split('-');
+            const shortYear = year.slice(-2);
+            return `${day}/${month}/${shortYear}`;
+        }
+
+        // Função para converter data do formato DD/MM/YY para YYYY-MM-DD
+        function formatDateFromSheetFormat(dateString) {
+            const [day, month, year] = dateString.split('/');
+            const fullYear = year.length === 2 ? `20${year}` : year;
+            return `${fullYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        }
+
+        // EXCLUSIVAMENTE API SHEETY: Verificar status da API e carregar dados
+        async function checkAPIStatus() {
             try {
-                console.log('Carregando agendamentos...');
-                const response = await fetch(SHEETDB_API_URL, {
+                updateAPIStatus('🔄 Verificando conexão com a planilha...', 'info');
+                
+                // Testar API de agendamentos
+                const agendamentosResponse = await fetch(SHEETY_AGENDAMENTOS_API_URL, {
                     method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
+                    timeout: 10000
                 });
                 
-                console.log('Status da resposta:', response.status);
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('Dados recebidos:', data);
-                    agendamentos = Array.isArray(data) ? data : [];
-                    exibirAgendamentosPublicos();
-                } else {
-                    console.error('Erro na resposta:', response.status, response.statusText);
-                    agendamentos = [];
-                    exibirAgendamentosPublicos();
+                if (!agendamentosResponse.ok) {
+                    throw new Error(`Erro na API de agendamentos: ${agendamentosResponse.status}`);
                 }
+                
+                // Testar API de horários
+                const horariosResponse = await fetch(SHEETY_HORARIOS_API_URL, {
+                    method: 'GET',
+                    timeout: 10000
+                });
+                
+                if (horariosResponse.ok) {
+                    const data = await horariosResponse.json();
+                    const sheetData = data.sheet1 || [];
+                    
+                    // Verificar se há dados válidos (não apenas IDs vazios)
+                    const validData = sheetData.filter(item => 
+                        item && 
+                        typeof item === 'object' && 
+                        item.data && 
+                        item.data.trim() !== ''
+                    );
+                    
+                    if (validData.length > 0) {
+                        updateAPIStatus('✅ Conectado à planilha de horários', 'online');
+                        apiOnline = true;
+                        processHorariosData(validData);
+                    } else {
+                        updateAPIStatus('⚠️ Planilha de horários vazia. Configure horários na planilha.', 'warning');
+                        apiOnline = true; // API está online, mas sem dados
+                        horariosCache.clear();
+                    }
+                } else {
+                    throw new Error(`Erro na API de horários: ${horariosResponse.status}`);
+                }
+                
             } catch (error) {
-                console.error('Erro ao carregar agendamentos:', error);
-                agendamentos = [];
-                mostrarMensagem('Conectando com o servidor...', 'error');
-                exibirAgendamentosPublicos();
+                console.error('Erro ao verificar API:', error);
+                updateAPIStatus('❌ Erro de conexão com a planilha. Verifique sua internet.', 'offline');
+                apiOnline = false;
+                horariosCache.clear();
             }
         }
 
-        function carregarHorariosDisponiveis(data) {
-            const container = document.getElementById('horarios-container');
-            container.innerHTML = '';
-
-            // Filtrar agendamentos para a data selecionada
-            const agendamentosData = agendamentos.filter(ag => ag.data === data);
-            const horariosOcupados = agendamentosData.map(ag => ag.horario);
-
-            HORARIOS_PADRAO.forEach(horario => {
-                const slot = document.createElement('div');
-                slot.className = 'horario-slot';
-                slot.textContent = horario;
-                slot.dataset.horario = horario;
-
-                if (horariosOcupados.includes(horario)) {
-                    slot.classList.add('occupied');
-                    slot.title = 'Horário já ocupado';
-                } else {
-                    slot.addEventListener('click', function() {
-                        selecionarHorario(this);
-                    });
+        function updateAPIStatus(message, type) {
+            const statusElements = ['api-status', 'admin-api-status'];
+            statusElements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = message;
+                    element.className = `api-status ${type}`;
                 }
-
-                container.appendChild(slot);
             });
         }
 
-        function selecionarHorario(elemento) {
-            // Remove seleção anterior
+        // EXCLUSIVAMENTE API SHEETY: Processar dados da planilha e cachear por data
+        function processHorariosData(data) {
+            horariosCache.clear();
+            
+            data.forEach(item => {
+                if (item.data && item.data.trim()) {
+                    const horarios = [];
+                    
+                    // Extrair horários das colunas hora1 a hora15
+                    for (let i = 1; i <= 15; i++) {
+                        const horaCol = `hora${i}`;
+                        if (item[horaCol] && item[horaCol].trim()) {
+                            horarios.push(item[horaCol].trim());
+                        }
+                    }
+                    
+                    if (horarios.length > 0) {
+                        try {
+                            const inputDate = formatDateFromSheetFormat(item.data.trim());
+                            horariosCache.set(inputDate, horarios.sort());
+                            console.log(`Horários carregados para ${inputDate}:`, horarios);
+                        } catch (error) {
+                            console.warn('Erro ao processar data:', item.data, error);
+                        }
+                    }
+                }
+            });
+            
+            console.log(`Cache de horários carregado com ${horariosCache.size} datas`);
+        }
+
+        // EXCLUSIVAMENTE API SHEETY: Obter horários para uma data específica
+        function getHorariosForDate(date) {
+            // APENAS verificar cache da API Sheety
+            if (horariosCache.has(date)) {
+                console.log(`Horários encontrados na planilha para ${date}:`, horariosCache.get(date));
+                return horariosCache.get(date);
+            }
+            
+            // Se não há configuração específica na planilha, retornar null
+            console.log(`Nenhum horário configurado na planilha para ${date}`);
+            return null;
+        }
+
+        // EXCLUSIVAMENTE API SHEETY: Carregar horários baseados na planilha
+        async function loadHorarios() {
+            const dataInput = document.getElementById('data');
+            const horariosContainer = document.getElementById('horarios-container');
+            
+            if (!dataInput.value) {
+                horariosContainer.innerHTML = `
+                    <div class="loading">
+                        <div class="loading-text">Selecione uma data para ver os horários</div>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                horariosContainer.innerHTML = `
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">Carregando horários da planilha...</div>
+                    </div>
+                `;
+
+                const selectedDate = dataInput.value;
+                
+                // Recarregar dados da API
+                await checkAPIStatus();
+                
+                // Obter horários EXCLUSIVAMENTE da planilha
+                const horariosDisponiveis = getHorariosForDate(selectedDate);
+                
+                if (!horariosDisponiveis || horariosDisponiveis.length === 0) {
+                    horariosContainer.innerHTML = `
+                        <div class="message warning">
+                            📅 Não há horários configurados na planilha para esta data.<br>
+                            <small>Configure os horários no painel administrativo ou escolha outra data.</small>
+                        </div>
+                    `;
+                    return;
+                }
+
+                console.log('Horários disponíveis da planilha para', selectedDate, ':', horariosDisponiveis);
+
+                // Filtrar horários já ocupados
+                const agendamentosNaData = agendamentosData.filter(agendamento => 
+                    agendamento.data === selectedDate
+                );
+                const horariosOcupados = agendamentosNaData.map(agendamento => agendamento.horario);
+
+                const horariosGrid = document.createElement('div');
+                horariosGrid.className = 'horarios-grid';
+
+                horariosDisponiveis.forEach(horario => {
+                    const horarioSlot = document.createElement('div');
+                    horarioSlot.className = 'horario-slot';
+                    horarioSlot.textContent = horario;
+                    
+                    if (horariosOcupados.includes(horario)) {
+                        horarioSlot.classList.add('occupied');
+                        horarioSlot.title = 'Horário ocupado';
+                    } else {
+                        horarioSlot.addEventListener('click', () => selectHorario(horario, horarioSlot));
+                    }
+                    
+                    horariosGrid.appendChild(horarioSlot);
+                });
+
+                horariosContainer.innerHTML = '';
+                horariosContainer.appendChild(horariosGrid);
+
+            } catch (error) {
+                console.error('Erro ao carregar horários:', error);
+                horariosContainer.innerHTML = `
+                    <div class="message error">
+                        Erro ao carregar horários da planilha. Tente novamente.
+                    </div>
+                `;
+            }
+        }
+
+        function selectHorario(horario, element) {
+            // Remover seleção anterior
             document.querySelectorAll('.horario-slot.selected').forEach(slot => {
                 slot.classList.remove('selected');
             });
-
-            // Adiciona seleção atual
-            elemento.classList.add('selected');
-            horarioSelecionado = elemento.dataset.horario;
-        }
-
-        async function realizarAgendamento() {
-            const nome = document.getElementById('cliente-nome').value.trim();
-            const telefone = document.getElementById('cliente-telefone').value.trim();
-            const email = document.getElementById('cliente-email').value.trim();
-            const servico = document.getElementById('servico').value;
-            const data = document.getElementById('data').value;
-            const observacoes = document.getElementById('observacoes').value.trim();
-
-            if (!horarioSelecionado) {
-                mostrarMensagem('Por favor, selecione um horário.', 'error');
-                return;
-            }
-
-            const btnAgendar = document.getElementById('btn-agendar');
-            btnAgendar.disabled = true;
-            btnAgendar.textContent = 'Processando...';
-
-            // Criar objeto com dados do agendamento
-            const novoAgendamento = {
-                data: {
-                    nome: nome,
-                    telefone: telefone,
-                    email: email,
-                    servico: servico,
-                    data: data,
-                    horario: horarioSelecionado,
-                    observacoes: observacoes,
-                    status: 'Confirmado',
-                    dataCriacao: new Date().toLocaleString('pt-BR')
-                }
-            };
-
-            console.log('Enviando agendamento:', novoAgendamento);
-
-            try {
-                const response = await fetch(SHEETDB_API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(novoAgendamento)
-                });
-
-                console.log('Status da resposta:', response.status);
-                console.log('Headers da resposta:', [...response.headers.entries()]);
-                
-                const responseText = await response.text();
-                console.log('Resposta completa:', responseText);
-                
-                if (response.ok) {
-                    let resultado;
-                    try {
-                        resultado = JSON.parse(responseText);
-                    } catch (e) {
-                        // Se não for JSON válido, considerar como sucesso se status for OK
-                        resultado = { success: true };
-                    }
-                    
-                    console.log('Resultado processado:', resultado);
-                    
-                    const dataFormatada = new Date(data).toLocaleDateString('pt-BR');
-                    mostrarMensagem(`Agendamento realizado com sucesso! 🎉\n${nome}, seu ${servico} está marcado para ${dataFormatada} às ${horarioSelecionado}.`, 'success');
-                    
-                    // Limpar formulário
-                    document.getElementById('agendamento-form').reset();
-                    horarioSelecionado = null;
-                    
-                    // Recarregar dados após um tempo
-                    setTimeout(() => {
-                        carregarAgendamentos();
-                    }, 2000);
-                    
-                    document.getElementById('horarios-container').innerHTML = 
-                        '<div class="loading">Selecione uma data para ver os horários</div>';
-                } else {
-                    console.error('Erro HTTP:', response.status, response.statusText);
-                    console.error('Resposta de erro:', responseText);
-                    throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
-                }
-            } catch (error) {
-                console.error('Erro completo:', error);
-                mostrarMensagem('Erro ao realizar agendamento. Detalhes no console (F12).', 'error');
-            } finally {
-                btnAgendar.disabled = false;
-                btnAgendar.textContent = '💫 Confirmar Agendamento';
-            }
-        }
-
-        function exibirAgendamentosPublicos() {
-            const container = document.getElementById('agendamentos-publicos');
             
-            // Filtrar apenas agendamentos futuros
-            const hoje = new Date();
-            const agendamentosFuturos = agendamentos.filter(ag => {
-                const dataAgendamento = new Date(ag.data);
-                return dataAgendamento >= hoje;
-            }).sort((a, b) => {
-                const dataA = new Date(a.data + ' ' + a.horario);
-                const dataB = new Date(b.data + ' ' + b.horario);
-                return dataA - dataB;
-            }).slice(0, 10); // Mostrar apenas os próximos 10
-
-            if (agendamentosFuturos.length === 0) {
-                container.innerHTML = '<div class="loading">Nenhum agendamento futuro encontrado.</div>';
-                return;
-            }
-
-            const html = agendamentosFuturos.map(ag => `
-                <div class="agendamento-item">
-                    <h4>${ag.servico}</h4>
-                    <p><strong>Data:</strong> ${new Date(ag.data).toLocaleDateString('pt-BR')}</p>
-                    <p><strong>Horário:</strong> ${ag.horario}</p>
-                    <p><strong>Status:</strong> ${ag.status}</p>
-                </div>
-            `).join('');
-
-            container.innerHTML = html;
+            // Selecionar novo horário
+            element.classList.add('selected');
+            selectedHorario = horario;
         }
 
-        function toggleAdmin() {
-            const adminContent = document.getElementById('admin-content');
-            adminContent.classList.toggle('active');
-            
-            if (adminContent.classList.contains('active')) {
-                carregarTodosAgendamentos();
-            }
-        }
-
-        async function carregarTodosAgendamentos() {
-            const container = document.getElementById('todos-agendamentos');
-            container.innerHTML = '<div class="loading">Carregando todos os agendamentos...</div>';
-
+        async function loadAgendamentos() {
             try {
-                const response = await fetch(SHEETDB_API_URL, {
+                console.log('Carregando agendamentos da API...');
+                
+                const response = await fetch(SHEETY_AGENDAMENTOS_API_URL, {
                     method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
+                    timeout: 10000
                 });
                 
                 if (response.ok) {
-                    const todosAgendamentos = await response.json();
-                    console.log('Todos os agendamentos:', todosAgendamentos);
+                    const data = await response.json();
+                    const sheetData = data.página1 || [];
                     
-                    if (!todosAgendamentos || todosAgendamentos.length === 0) {
-                        container.innerHTML = '<div class="loading">Nenhum agendamento encontrado.</div>';
-                        return;
+                    // Filtrar apenas agendamentos válidos (com dados)
+                    agendamentosData = sheetData.filter(item => 
+                        item && 
+                        typeof item === 'object' && 
+                        item.nome && 
+                        item.data && 
+                        item.horario
+                    );
+                    
+                    console.log('Agendamentos carregados:', agendamentosData.length);
+                    
+                    if (isAuthenticated) {
+                        displayAgendamentos();
                     }
-
-                    // Ordenar por data e horário
-                    const agendamentosOrdenados = todosAgendamentos.sort((a, b) => {
-                        const dataA = new Date(a.data + ' ' + a.horario);
-                        const dataB = new Date(b.data + ' ' + b.horario);
-                        return dataB - dataA; // Mais recentes primeiro
-                    });
-
-                    const html = agendamentosOrdenados.map(ag => `
-                        <div class="agendamento-item">
-                            <h4>${ag.nome || 'Nome não informado'} - ${ag.servico || 'Serviço não informado'}</h4>
-                            <p><strong>Data:</strong> ${ag.data ? new Date(ag.data).toLocaleDateString('pt-BR') : 'Data não informada'}</p>
-                            <p><strong>Horário:</strong> ${ag.horario || 'Horário não informado'}</p>
-                            <p><strong>Telefone:</strong> ${ag.telefone || 'Não informado'}</p>
-                            <p><strong>Email:</strong> ${ag.email || 'Não informado'}</p>
-                            <p><strong>Status:</strong> ${ag.status || 'Pendente'}</p>
-                            <p><strong>Criado em:</strong> ${ag.dataCriacao || 'Não informado'}</p>
-                            ${ag.observacoes ? `<p><strong>Observações:</strong> ${ag.observacoes}</p>` : ''}
-                        </div>
-                    `).join('');
-
-                    container.innerHTML = html;
                 } else {
-                    console.error('Erro ao carregar:', response.status);
-                    container.innerHTML = '<div class="loading">Erro ao carregar agendamentos.</div>';
+                    console.warn('Erro ao carregar agendamentos:', response.status, response.statusText);
+                    agendamentosData = [];
                 }
             } catch (error) {
                 console.error('Erro ao carregar agendamentos:', error);
-                container.innerHTML = '<div class="loading">Erro de conexão. Verifique sua internet.</div>';
+                agendamentosData = [];
             }
         }
 
-        function mostrarMensagem(texto, tipo) {
-            const container = document.getElementById('message-container');
-            const mensagem = document.createElement('div');
-            mensagem.className = `message ${tipo}`;
-            mensagem.textContent = texto;
+        // Autenticação administrativa
+        function showLoginModal() {
+            document.getElementById('login-modal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.remove('active');
+            document.getElementById('admin-user').value = '';
+            document.getElementById('admin-password').value = '';
+        }
+
+        function authenticateAdmin() {
+            const username = document.getElementById('admin-user').value;
+            const password = document.getElementById('admin-password').value;
+
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                isAuthenticated = true;
+                document.getElementById('admin-section').classList.add('authenticated');
+                closeLoginModal();
+                displayAgendamentos();
+                checkAPIStatus();
+                showMessage('Login realizado com sucesso!', 'success');
+            } else {
+                showMessage('Credenciais inválidas!', 'error');
+            }
+        }
+
+        function logout() {
+            isAuthenticated = false;
+            document.getElementById('admin-section').classList.remove('authenticated');
             
-            container.innerHTML = '';
-            container.appendChild(mensagem);
+            // Fechar todos os painéis
+            document.querySelectorAll('.admin-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.querySelectorAll('.admin-toggle').forEach(toggle => {
+                toggle.classList.remove('active');
+            });
             
+            showMessage('Logout realizado com sucesso!', 'info');
+        }
+
+        function toggleAdminPanel(panelId) {
+            const panel = document.getElementById(panelId);
+            const toggle = event.target;
+            
+            if (panel.classList.contains('active')) {
+                panel.classList.remove('active');
+                toggle.classList.remove('active');
+            } else {
+                // Fechar outros painéis
+                document.querySelectorAll('.admin-panel').forEach(p => {
+                    if (p.id !== panelId) {
+                        p.classList.remove('active');
+                    }
+                });
+                document.querySelectorAll('.admin-toggle').forEach(t => {
+                    if (t !== toggle) {
+                        t.classList.remove('active');
+                    }
+                });
+                
+                panel.classList.add('active');
+                toggle.classList.add('active');
+            }
+        }
+
+        function confirmarAgendamento() {
+            const nome = document.getElementById('nome').value.trim();
+            const telefone = document.getElementById('telefone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const servico = document.getElementById('servico').value;
+            const data = document.getElementById('data').value;
+
+            if (!nome || !telefone || !servico || !data || !selectedHorario) {
+                showMessage('Por favor, preencha todos os campos obrigatórios e selecione um horário.', 'error');
+                return;
+            }
+
+            // Verificar se o horário ainda está disponível
+            const agendamentosNaData = agendamentosData.filter(agendamento => 
+                agendamento.data === data
+            );
+            const horariosOcupados = agendamentosNaData.map(agendamento => agendamento.horario);
+            
+            if (horariosOcupados.includes(selectedHorario)) {
+                showMessage('Este horário foi ocupado por outro cliente. Por favor, selecione outro horário.', 'error');
+                loadHorarios();
+                return;
+            }
+
+            // Mostrar modal de confirmação
+            const confirmationDetails = document.getElementById('confirmation-details');
+            confirmationDetails.innerHTML = `
+                <p><strong>Nome:</strong> ${nome}</p>
+                <p><strong>Telefone:</strong> ${telefone}</p>
+                ${email ? `<p><strong>Email:</strong> ${email}</p>` : ''}
+                <p><strong>Serviço:</strong> ${servico}</p>
+                <p><strong>Data:</strong> ${formatDate(data)}</p>
+                <p><strong>Horário:</strong> ${selectedHorario}</p>
+            `;
+
+            document.getElementById('confirmation-modal').classList.add('active');
+        }
+
+        async function finalizarAgendamento() {
+            if (isProcessing) return;
+            
+            isProcessing = true;
+            const finalizarBtn = document.getElementById('finalizar-btn');
+            const originalText = finalizarBtn.textContent;
+            
+            finalizarBtn.disabled = true;
+            finalizarBtn.textContent = 'Processando...';
+
+            try {
+                const nome = document.getElementById('nome').value.trim();
+                const telefone = document.getElementById('telefone').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const servico = document.getElementById('servico').value;
+                const data = document.getElementById('data').value;
+
+                // Formato Sheety correto
+                const agendamento = {
+                    página1: {
+                        nome: nome,
+                        telefone: telefone,
+                        email: email || '',
+                        servico: servico,
+                        data: data,
+                        horario: selectedHorario,
+                        timestamp: new Date().toISOString()
+                    }
+                };
+
+                console.log('Enviando agendamento:', agendamento);
+
+                const response = await fetch(SHEETY_AGENDAMENTOS_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(agendamento)
+                });
+
+                console.log('Resposta da API:', response.status, response.statusText);
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Agendamento salvo com sucesso:', result);
+                    
+                    showMessage('Agendamento realizado com sucesso! 🎉', 'success');
+                    
+                    finalizarBtn.textContent = '✅ Agendamento Enviado';
+                    finalizarBtn.disabled = true;
+                    finalizarBtn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                    
+                    const whatsappBtn = document.getElementById('whatsapp-btn');
+                    whatsappBtn.style.display = 'inline-block';
+                    
+                    // Limpar formulário
+                    document.getElementById('nome').value = '';
+                    document.getElementById('telefone').value = '';
+                    document.getElementById('email').value = '';
+                    document.getElementById('servico').value = '';
+                    document.getElementById('data').value = '';
+                    selectedHorario = null;
+                    
+                    await loadAgendamentos();
+                    loadHorarios();
+                } else {
+                    const errorText = await response.text();
+                    console.error('Erro na resposta da API:', response.status, errorText);
+                    throw new Error(`Erro ${response.status}: ${errorText}`);
+                }
+            } catch (error) {
+                console.error('Erro ao salvar agendamento:', error);
+                showMessage('Erro ao realizar agendamento. Verifique sua conexão e tente novamente.', 'error');
+            } finally {
+                isProcessing = false;
+                finalizarBtn.disabled = false;
+                finalizarBtn.textContent = originalText;
+            }
+        }
+
+        function enviarWhatsAppEFechar() {
+            enviarWhatsApp();
+            closeConfirmationModal();
+        }
+
+        function enviarWhatsApp() {
+            const nome = document.getElementById('nome').value.trim();
+            const telefone = document.getElementById('telefone').value.trim();
+            const servico = document.getElementById('servico').value;
+            const data = document.getElementById('data').value;
+
+            const mensagem = `Olá! Gostaria de confirmar meu agendamento:
+
+📅 *Agendamento Confirmado*
+👤 Nome: ${nome}
+📞 Telefone: ${telefone}
+💅 Serviço: ${servico}
+📅 Data: ${formatDate(data)}
+🕐 Horário: ${selectedHorario}
+
+Obrigado(a)!`;
+
+            const numeroWhatsApp = '5511999999999'; // Substitua pelo número do estúdio
+            const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+            
+            window.open(url, '_blank');
+        }
+
+        function closeConfirmationModal() {
+            document.getElementById('confirmation-modal').classList.remove('active');
+            
+            const finalizarBtn = document.getElementById('finalizar-btn');
+            finalizarBtn.textContent = 'Confirmar';
+            finalizarBtn.disabled = false;
+            finalizarBtn.style.background = '';
+            
+            const whatsappBtn = document.getElementById('whatsapp-btn');
+            whatsappBtn.style.display = 'none';
+        }
+
+        function displayAgendamentos() {
+            const agendamentosList = document.getElementById('agendamentos-list');
+            
+            if (agendamentosData.length === 0) {
+                agendamentosList.innerHTML = '<p>Nenhum agendamento encontrado.</p>';
+                return;
+            }
+
+            const agendamentosOrdenados = [...agendamentosData].sort((a, b) => {
+                const dateA = new Date(a.data + ' ' + a.horario);
+                const dateB = new Date(b.data + ' ' + b.horario);
+                return dateA - dateB;
+            });
+
+            let tableHTML = `
+                <table class="agendamentos-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>Serviço</th>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            agendamentosOrdenados.forEach((agendamento) => {
+                tableHTML += `
+                    <tr>
+                        <td>${agendamento.nome}</td>
+                        <td>${agendamento.telefone}</td>
+                        <td>${agendamento.servico}</td>
+                        <td>${formatDate(agendamento.data)}</td>
+                        <td>${agendamento.horario}</td>
+                        <td>
+                            <button class="btn btn-small btn-danger" onclick="deleteAgendamento(${agendamento.id})">
+                                🗑️ Excluir
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+
+            agendamentosList.innerHTML = tableHTML;
+        }
+
+        async function deleteAgendamento(id) {
+            if (!confirm('Tem certeza que deseja excluir este agendamento?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${SHEETY_AGENDAMENTOS_API_URL}/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    await loadAgendamentos();
+                    displayAgendamentos();
+                    loadHorarios();
+                    showMessage('Agendamento excluído com sucesso!', 'success');
+                } else {
+                    throw new Error('Erro ao excluir agendamento');
+                }
+            } catch (error) {
+                console.error('Erro ao excluir agendamento:', error);
+                showMessage('Erro ao excluir agendamento.', 'error');
+            }
+        }
+
+        function exportarDados() {
+            if (agendamentosData.length === 0) {
+                showMessage('Nenhum dado para exportar.', 'error');
+                return;
+            }
+
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "Nome,Telefone,Email,Serviço,Data,Horário,Timestamp\n"
+                + agendamentosData.map(row => 
+                    `"${row.nome}","${row.telefone}","${row.email || ''}","${row.servico}","${row.data}","${row.horario}","${row.timestamp || ''}"`
+                ).join("\n");
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `agendamentos_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showMessage('Dados exportados com sucesso!', 'success');
+        }
+
+        // EXCLUSIVAMENTE API SHEETY: Configuração de horários por data
+        async function loadDateConfig() {
+            const configDate = document.getElementById('config-date').value;
+            if (!configDate) {
+                showMessage('Selecione uma data primeiro.', 'error');
+                return;
+            }
+
+            try {
+                // Recarregar dados da API
+                await checkAPIStatus();
+                
+                currentConfigDate = configDate;
+                document.getElementById('selected-date-display').textContent = formatDate(configDate);
+                
+                const configGrid = document.getElementById('horarios-config-grid');
+                configGrid.innerHTML = '<div class="loading"><div class="loading-spinner"></div><div class="loading-text">Carregando da planilha...</div></div>';
+
+                // Obter horários EXCLUSIVAMENTE da planilha
+                const horariosConfigurados = getHorariosForDate(configDate) || [];
+                currentDateHorarios = [...horariosConfigurados];
+                
+                configGrid.innerHTML = '';
+
+                if (horariosConfigurados.length === 0) {
+                    configGrid.innerHTML = `
+                        <div class="message info">
+                            📝 Nenhum horário configurado na planilha para esta data.<br>
+                            <small>Use o campo abaixo para adicionar horários.</small>
+                        </div>
+                    `;
+                } else {
+                    horariosConfigurados.forEach(horario => {
+                        const configItem = document.createElement('div');
+                        configItem.className = 'horario-config-item';
+                        
+                        const horarioInfo = document.createElement('div');
+                        horarioInfo.className = 'horario-info';
+                        
+                        const label = document.createElement('label');
+                        label.textContent = horario;
+                        label.style.fontWeight = 'bold';
+                        
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.className = 'delete-btn';
+                        deleteBtn.textContent = '🗑️';
+                        deleteBtn.title = 'Excluir este horário';
+                        deleteBtn.onclick = () => deleteHorarioFromDate(horario);
+                        
+                        horarioInfo.appendChild(label);
+                        configItem.appendChild(horarioInfo);
+                        configItem.appendChild(deleteBtn);
+                        configGrid.appendChild(configItem);
+                    });
+                }
+
+                showMessage('Configuração carregada da planilha!', 'success');
+                
+            } catch (error) {
+                console.error('Erro ao carregar configuração da data:', error);
+                showMessage('Erro ao carregar configuração da planilha. Tente novamente.', 'error');
+            }
+        }
+
+        // EXCLUSIVAMENTE API SHEETY: Salvar configuração de horários
+        async function saveHorariosConfig() {
+            if (!currentConfigDate) {
+                showMessage('Selecione uma data primeiro.', 'error');
+                return;
+            }
+
+            if (isProcessing) return;
+            isProcessing = true;
+
+            try {
+                showMessage('Salvando na planilha...', 'info');
+
+                const dateBR = formatDateToSheetFormat(currentConfigDate);
+                
+                // Verificar se já existe uma linha para esta data
+                const response = await fetch(SHEETY_HORARIOS_API_URL);
+                if (response.ok) {
+                    const data = await response.json();
+                    const sheetData = data.sheet1 || [];
+                    
+                    // Procurar linha existente
+                    const existingRow = sheetData.find(item => item.data === dateBR);
+                    
+                    if (existingRow) {
+                        // Atualizar linha existente
+                        const updateData = {
+                            sheet1: {
+                                data: dateBR
+                            }
+                        };
+                        
+                        // Adicionar horários às colunas hora1-hora15
+                        for (let i = 1; i <= 15; i++) {
+                            updateData.sheet1[`hora${i}`] = currentDateHorarios[i-1] || '';
+                        }
+                        
+                        const updateResponse = await fetch(`${SHEETY_HORARIOS_API_URL}/${existingRow.id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(updateData)
+                        });
+                        
+                        if (!updateResponse.ok) {
+                            throw new Error('Erro ao atualizar configuração na planilha');
+                        }
+                    } else {
+                        // Criar nova linha
+                        const newData = {
+                            sheet1: {
+                                data: dateBR
+                            }
+                        };
+                        
+                        // Adicionar horários às colunas hora1-hora15
+                        for (let i = 1; i <= 15; i++) {
+                            newData.sheet1[`hora${i}`] = currentDateHorarios[i-1] || '';
+                        }
+                        
+                        const createResponse = await fetch(SHEETY_HORARIOS_API_URL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(newData)
+                        });
+                        
+                        if (!createResponse.ok) {
+                            throw new Error('Erro ao criar configuração na planilha');
+                        }
+                    }
+                }
+                
+                // Recarregar dados e interface
+                await checkAPIStatus();
+                loadDateConfig();
+                
+                const mainDateInput = document.getElementById('data');
+                if (mainDateInput.value === currentConfigDate) {
+                    loadHorarios();
+                }
+                
+                showMessage(`✅ Configuração salva na planilha! ${currentDateHorarios.length} horários para ${formatDate(currentConfigDate)}.`, 'success');
+                
+            } catch (error) {
+                console.error('Erro ao salvar configuração:', error);
+                showMessage('Erro ao salvar na planilha. Tente novamente.', 'error');
+            } finally {
+                isProcessing = false;
+            }
+        }
+
+        // EXCLUSIVAMENTE API SHEETY: Excluir horário específico
+        async function deleteHorarioFromDate(horario) {
+            if (!currentConfigDate) {
+                showMessage('Selecione uma data primeiro.', 'error');
+                return;
+            }
+
+            if (!confirm(`Tem certeza que deseja excluir o horário ${horario} da data ${formatDate(currentConfigDate)}?`)) {
+                return;
+            }
+
+            try {
+                // Remover do array local
+                const index = currentDateHorarios.indexOf(horario);
+                if (index > -1) {
+                    currentDateHorarios.splice(index, 1);
+                }
+                
+                // Recarregar interface
+                loadDateConfig();
+                
+                const mainDateInput = document.getElementById('data');
+                if (mainDateInput.value === currentConfigDate) {
+                    loadHorarios();
+                }
+                
+                showMessage(`Horário ${horario} excluído! Clique em "Salvar na Planilha" para confirmar.`, 'info');
+            } catch (error) {
+                console.error('Erro ao excluir horário:', error);
+                showMessage('Erro ao excluir horário. Tente novamente.', 'error');
+            }
+        }
+
+        // EXCLUSIVAMENTE API SHEETY: Adicionar horário
+        async function addHorarioToDate() {
+            const novoHorario = document.getElementById('novo-horario').value;
+            if (!novoHorario) {
+                showMessage('Digite um horário válido.', 'error');
+                return;
+            }
+
+            if (!currentConfigDate) {
+                showMessage('Selecione uma data primeiro.', 'error');
+                return;
+            }
+
+            try {
+                if (currentDateHorarios.includes(novoHorario)) {
+                    showMessage('Este horário já existe para esta data.', 'error');
+                    return;
+                }
+
+                if (currentDateHorarios.length >= 15) {
+                    showMessage('Máximo de 15 horários por data.', 'error');
+                    return;
+                }
+
+                currentDateHorarios.push(novoHorario);
+                currentDateHorarios.sort();
+
+                loadDateConfig();
+                
+                document.getElementById('novo-horario').value = '';
+                
+                showMessage('Horário adicionado! Clique em "Salvar na Planilha" para confirmar.', 'info');
+                
+            } catch (error) {
+                console.error('Erro ao adicionar horário:', error);
+                showMessage('Erro ao adicionar horário. Tente novamente.', 'error');
+            }
+        }
+
+        // EXCLUSIVAMENTE API SHEETY: Limpar todos os horários
+        async function clearDateHorarios() {
+            if (!currentConfigDate) {
+                showMessage('Selecione uma data primeiro.', 'error');
+                return;
+            }
+
+            if (!confirm(`Tem certeza que deseja limpar TODOS os horários da data ${formatDate(currentConfigDate)}?`)) {
+                return;
+            }
+
+            try {
+                currentDateHorarios = [];
+                
+                loadDateConfig();
+                
+                const mainDateInput = document.getElementById('data');
+                if (mainDateInput.value === currentConfigDate) {
+                    loadHorarios();
+                }
+                
+                showMessage('Todos os horários removidos! Clique em "Salvar na Planilha" para confirmar.', 'info');
+                
+            } catch (error) {
+                console.error('Erro ao limpar horários da data:', error);
+                showMessage('Erro ao limpar horários. Tente novamente.', 'error');
+            }
+        }
+
+        // Funções utilitárias
+        function formatDate(dateString) {
+            const date = new Date(dateString + 'T00:00:00');
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        function showMessage(message, type) {
+            const existingMessages = document.querySelectorAll('.message');
+            existingMessages.forEach(msg => msg.remove());
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = message;
+
+            const container = document.querySelector('.container');
+            container.insertBefore(messageDiv, container.firstChild);
+
             setTimeout(() => {
-                mensagem.remove();
+                messageDiv.remove();
             }, 5000);
         }
     </script>
